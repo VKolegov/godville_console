@@ -73,6 +73,7 @@ func trackExtended(rate int) {
 		trackGodDataExtended()
 		trackHeroDataExtended()
 		trackFight()
+		processAutoInfluence()
 
 		if eCurrentData.Hero.TempleCompletedAt == "" {
 			trackBricksExtended()
@@ -226,11 +227,16 @@ func trackBricksExtended() {
 	} else if lastBrickCnt != bCnt {
 		diff := bCnt - lastBrickCnt
 		lastBrickCnt = bCnt
-		fmt.Printf("%s получил %d кирпичей! Итого: %d\n", currentData.Name, diff, bCnt)
+		fmt.Printf(
+			"[Храм] %s получил %d кирпичей! Итого: %d\n",
+			currentData.Name,
+			diff,
+			bCnt,
+		)
 	}
 
 	if currentData.BricksCnt == 1000 {
-		fmt.Printf("%s собрал все кирпичи для постройки храма!\n", currentData.Name)
+		fmt.Printf("[Храм] %s собрал все кирпичи для постройки храма!\n", currentData.Name)
 	}
 }
 
@@ -243,11 +249,16 @@ func trackWoodExtended() {
 	} else if lastWoodCnt != wCnt {
 		diff := wCnt - lastWoodCnt
 		lastWoodCnt = wCnt
-		fmt.Printf("Герой получил %d досок для ковчега!\n", diff)
+		fmt.Printf(
+			"[Ковчег] %s получил %d досок для ковчега! Итого: %d\n",
+			eCurrentData.Hero.Name,
+			diff,
+			eCurrentData.Hero.WoodCnt,
+		)
 	}
 
 	if eCurrentData.Hero.WoodCnt == 1000 {
-		fmt.Printf("%s собрал дерево для постройки ковчега!\n", eCurrentData.Hero.Name)
+		fmt.Printf("[Ковчег] %s собрал дерево для постройки ковчега!\n", eCurrentData.Hero.Name)
 	}
 }
 
@@ -267,6 +278,11 @@ func trackSavingsExtended() {
 		diff := savings - lastSavings
 		lastSavings = savings
 
-		fmt.Printf("Герой отложил %d тысяч! Итого: %d тыс.", diff, savings)
+		fmt.Printf(
+			"[Сбережения] %s отложил %d тысяч! Итого: %d тыс.",
+			eCurrentData.Hero.Name,
+			diff,
+			savings,
+		)
 	}
 }

@@ -46,6 +46,8 @@ jobs:
           echo "GODNAME=" >> settings.cfg
           echo "KEY=" >> settings.cfg
           echo "PASSWORD=" >> settings.cfg
+          echo "AUTO_EVIL_INFLUENCE_THRESHOLD=100" >> settings.cfg
+          echo "MONSTER_PROGRESS_THRESHOLD=50" >> settings.cfg
           cp settings.cfg linux/settings.cfg
           cp settings.cfg macos/settings.cfg
           cp settings.cfg windows/settings.cfg
