@@ -70,6 +70,7 @@ func trackBasicData() {
 		lastPrana = currentData.Godpower
 		lastTown = currentData.TownName
 		lastPillar = currentData.Distance
+		lastGold = currentData.GoldApprox
 	}
 
 }
