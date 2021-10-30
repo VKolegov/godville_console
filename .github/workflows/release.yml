@@ -1,0 +1,69 @@
+name: Godville Release Workflow
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: 🎉 Release
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v2.3.4
+
+      - name: Use Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '^1.15.1'
+
+      - name: 📂 Create platform dirs
+        run: |
+          mkdir macos
+          mkdir linux
+          mkdir windows
+
+      - name: 🔨 Build Go App (Linux)
+        run: |
+          go version
+          go build -o linux/godville
+
+      - name: 🔨 Build Go App (MacOS)
+        run: |
+          go version
+          GOOS=macos; GOARCH=amd64; go build -o macos/godville
+
+      - name: 🔨 Build Go App (Windows)
+        run: |
+          go version
+          GOOS=windows; GOARCH=amd64; go build -o windows/godville.exe
+
+      - name: Create config filee
+        run: |
+          touch settings.cfg
+          echo "GODNAME=" >> settings.cfg
+          echo "KEY=" >> settings.cfg
+          echo "PASSWORD=" >> settings.cfg
+          cp settings.cfg linux/settings.cfg
+          cp settings.cfg macos/settings.cfg
+          cp settings.cfg windows/settings.cfg
+
+
+      - name: Compressing
+        run: |
+          sudo apt-get install zip
+          zip -r linux.zip linux
+          zip -r macos.zip macos
+          zip -r windows.zip windows
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: true
+          title: "Development Build"
+          files: |
+            LICENSE.txt
+            *.zip
