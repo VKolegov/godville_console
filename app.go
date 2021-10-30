@@ -108,6 +108,12 @@ func main() {
 			} else {
 				commands.GodInfoExtended(eCurrentData, true)
 			}
+		case "команды":
+			commandList()
+		case "выход":
+			os.Exit(0)
+
+
 		default:
 			fmt.Printf("Вы попытались выполнить команду %s\n", command)
 		}
@@ -166,9 +172,13 @@ func greetings() {
 }
 
 func commandList() {
+	fmt.Println()
 	fmt.Println("Команды:")
-	fmt.Println("'герой' - вывести информацию о герое")
-	fmt.Println("'инвентарь' | 'инв' - вывести информацию об инвентаре героя")
-	fmt.Println("'бог' | 'я' - вывести информацию об себе (божестве)")
-	fmt.Println("'квест' - вывести информацию о текущем задании")
+	fmt.Println("	'герой' 				- вывести информацию о герое")
+	fmt.Println("	'инвентарь' или 'инв' 	- вывести информацию об инвентаре героя")
+	fmt.Println("	'бог' или 'я' 			- вывести информацию об себе (божестве)")
+	fmt.Println("	'квест' 				- вывести информацию о текущем задании")
+	fmt.Println("	'команды' 				- вывести список команд")
+	fmt.Println("	'выход' 				- закрыть программу")
+	fmt.Println()
 }
