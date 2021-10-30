@@ -1,12 +1,10 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/joho/godotenv"
 	"godville/commands"
 	"godville/structs"
-	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -17,6 +15,9 @@ const apiUrl = "https://godville.net/gods/api/"
 
 var (
 	currentData structs.GodvilleData
+
+	eClient      *http.Client
+	eCurrentData *structs.ExtendedData
 )
 
 func main() {
@@ -51,7 +52,24 @@ func main() {
 
 	fullUrl = apiUrl + godName + "/" + key
 
-	go trackActivity(fullUrl, 30)
+	password := os.Getenv("PASSWORD")
+
+	if password != "" {
+
+		err = login(godName, password)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+	} else {
+		fmt.Println("Не указан пароль. Режим ограниченного функционала")
+	}
+
+	if eClient != nil {
+		go trackExtended(30)
+	} else {
+		go trackBasic(fullUrl, 30)
+	}
 
 	for {
 		command = ""
@@ -67,84 +85,33 @@ func main() {
 
 		switch command {
 		case "квест":
-			commands.QuestStatus(currentData)
-		case "инв":
-			commands.Inventory(currentData)
-		case "инвентарь":
-			commands.Inventory(currentData)
+			if eCurrentData == nil {
+				commands.QuestStatus(currentData)
+			} else {
+				commands.QuestStatusExtended(eCurrentData.Hero)
+			}
+		case "инв", "инвентарь":
+			if eCurrentData == nil {
+				commands.Inventory(currentData)
+			} else {
+				commands.InventoryExtended(eCurrentData)
+			}
 		case "герой":
-			commands.Hero(currentData)
-		case "бог":
-			commands.GodInfo(currentData)
-		case "я":
-			commands.GodInfo(currentData)
+			if eCurrentData == nil {
+				commands.Hero(currentData)
+			} else {
+				commands.HeroExtended(eCurrentData)
+			}
+		case "бог", "я":
+			if eCurrentData == nil {
+				commands.GodInfo(currentData)
+			} else {
+				commands.GodInfoExtended(eCurrentData, true)
+			}
 		default:
 			fmt.Printf("Вы попытались выполнить команду %s\n", command)
 		}
 
-	}
-}
-
-func trackActivity(url string, rate int) {
-
-	var (
-		c http.Client
-		r *http.Response
-
-		initialRequest = true
-
-		err error
-	)
-
-	for {
-		r, err = c.Get(url)
-
-		if err != nil {
-			fmt.Printf("Error while making request: %s", err.Error())
-		}
-
-		err = json.NewDecoder(r.Body).Decode(&currentData)
-
-		if err != nil && err != io.EOF {
-			fmt.Printf("Error while reading body: %s\n", err.Error())
-		}
-
-		if initialRequest {
-
-			greetings()
-
-			initialRequest = false
-		}
-
-		// Превышена частота запросов к серверу
-		if currentData.Name != "" && currentData.Godname == "" {
-			fmt.Println(currentData.Name)
-			time.Sleep(time.Minute)
-			continue
-		}
-
-		if currentData.Expired == true {
-			fmt.Println("Данные устарели! Требуется зайти либо через браузер либо через клиент")
-			time.Sleep(time.Minute)
-			continue
-		}
-
-		trackGodData()
-		trackHeroData()
-
-		if currentData.TempleCompletedAt == "" {
-			trackBricks()
-		}
-
-		if currentData.ArkCompletedAt == "" {
-			trackWood()
-		}
-
-		if currentData.Savings != "" {
-			trackSavings()
-		}
-
-		time.Sleep(time.Second * time.Duration(rate))
 	}
 }
 

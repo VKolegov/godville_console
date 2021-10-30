@@ -1,9 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"godville/commands"
+	"io"
+	"net/http"
+	"time"
 )
 
 var (
@@ -20,7 +24,73 @@ var (
 
 	lastSavings       int32 = -1
 	lastSavingsString string
+
+	//lastMonsterName string
+	lastMonsterProgress uint16
 )
+
+func trackBasic(url string, rate int) {
+
+	var (
+		c http.Client
+		r *http.Response
+
+		initialRequest = true
+
+		err error
+	)
+
+	for {
+		r, err = c.Get(url)
+
+		if err != nil {
+			fmt.Printf("Error while making request: %s", err.Error())
+		}
+
+		err = json.NewDecoder(r.Body).Decode(&currentData)
+
+		if err != nil && err != io.EOF {
+			fmt.Printf("Error while reading body: %s\n", err.Error())
+		}
+
+		if initialRequest {
+
+			greetings()
+
+			initialRequest = false
+		}
+
+		// Превышена частота запросов к серверу
+		if currentData.Name != "" && currentData.Godname == "" {
+			fmt.Println(currentData.Name)
+			time.Sleep(time.Minute)
+			continue
+		}
+
+		if currentData.Expired == true {
+			fmt.Println("Данные устарели! Требуется зайти либо через браузер либо через клиент")
+			time.Sleep(time.Minute)
+			continue
+		}
+
+		trackGodData()
+		trackHeroData()
+
+		if currentData.TempleCompletedAt == "" {
+			trackBricks()
+		}
+
+		if currentData.ArkCompletedAt == "" {
+			trackWood()
+		}
+
+		if currentData.Savings != "" {
+			trackSavings()
+		}
+
+		time.Sleep(time.Second * time.Duration(rate))
+	}
+}
 
 func trackGodData() {
 
@@ -127,6 +197,7 @@ func trackSavings() {
 		fmt.Printf("Герой отложил %d тысяч!", diff)
 	}
 }
+
 func parseSavings(savingsString string) (int32, error) {
 	var (
 		savings = 0
