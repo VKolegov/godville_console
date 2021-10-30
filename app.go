@@ -190,4 +190,13 @@ func greetings() {
 			templeDate.Format(dateFormat),
 		)
 	}
+
+	commandList()
+}
+
+func commandList() {
+	fmt.Println("Команды:")
+	fmt.Println("'герой' - вывести информацию о герое")
+	fmt.Println("'инвентарь' | 'инв' - вывести информацию об инвентаре героя")
+	fmt.Println("'квест' - вывести информацию о текущем задании")
 }

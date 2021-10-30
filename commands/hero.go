@@ -14,6 +14,9 @@ func Hero(data structs.GodvilleData) {
 	}
 
 	fmt.Print("\n")
+
+	kd := float64(data.ArenaWon) / float64(data.ArenaLost)
+	fmt.Printf("Побед на арене: %d; Поражений на арене: %d; К/Д: %.2f\n", data.ArenaWon, data.ArenaLost, kd)
 }
 
 func Inventory(data structs.GodvilleData) {
