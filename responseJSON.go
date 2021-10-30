@@ -33,7 +33,7 @@ type responseJSON struct {
 	GoldApprox     string      `json:"gold_approx"`
 	DiaryLast      string      `json:"diary_last"`
 	TownName       string      `json:"town_name"`
-	Distance       int         `json:"distance"`
+	Distance       uint16      `json:"distance"`
 	ArenaFight     bool        `json:"arena_fight"`
 	InventoryNum   uint16      `json:"inventory_num"`
 	Quest          string      `json:"quest"`

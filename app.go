@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -19,14 +20,9 @@ func main() {
 		godName string
 		key     string
 
-		r            *http.Response
-		responseJSON responseJSON
-
-		lastHealth     uint16 = 0
-		lastPrana      uint8  = 0
-		lastDiaryEntry string = ""
-
 		err error
+
+		command string
 	)
 
 	err = godotenv.Load(".env")
@@ -51,44 +47,86 @@ func main() {
 
 	fmt.Printf("%s на связи!\n", godName)
 
-	c := http.Client{}
+	go trackActivity(fullUrl, 30)
 
 	for {
-		r, err = c.Get(fullUrl)
+		command = ""
+		_, _ = fmt.Scanf("%s", &command)
+
+		command = strings.TrimSpace(command)
+
+		if command == "" {
+			continue
+		}
+
+		fmt.Printf("Вы попытались выполнить команду %s\n", command)
+	}
+}
+
+func trackActivity(url string, rate int) {
+
+	var (
+		c    http.Client
+		r    *http.Response
+		data responseJSON
+
+		lastDiaryEntry string
+
+		lastHealth uint16 = 0
+		lastPrana  uint8  = 0
+		lastPillar uint16 = 0
+		lastTown   string
+
+		whereabouts string
+
+		err error
+	)
+
+	for {
+		r, err = c.Get(url)
 
 		if err != nil {
 			fmt.Printf("Error while making request: %s", err.Error())
 		}
 
-		err = json.NewDecoder(r.Body).Decode(&responseJSON)
+		err = json.NewDecoder(r.Body).Decode(&data)
 
 		if err != nil && err != io.EOF {
 			fmt.Printf("Error while reading body: %s\n", err.Error())
 		}
 
-		if responseJSON.Expired == true {
+		if data.Expired == true {
 			fmt.Println("Данные устарели! Требуется зайти либо через браузер либо через клиент")
 			os.Exit(1)
 		}
 
-		if lastDiaryEntry != responseJSON.DiaryLast {
-			lastDiaryEntry = responseJSON.DiaryLast
+		if lastDiaryEntry != data.DiaryLast {
+			lastDiaryEntry = data.DiaryLast
 			fmt.Printf("%s\n", lastDiaryEntry)
 		}
 
-		if lastHealth != responseJSON.Health || lastPrana != responseJSON.Godpower {
+		if lastHealth != data.Health || lastPrana != data.Godpower || lastPillar != data.Distance || lastTown != data.TownName {
+
+			if data.TownName == "" {
+				whereabouts = fmt.Sprintf("Столб #%d", data.Distance)
+			} else {
+				whereabouts = fmt.Sprintf("%s (ст. %d)", data.TownName, data.Distance)
+			}
+
 			fmt.Printf(
-				"Здоровье: %d/%d; Прана: %d%%\n",
-				responseJSON.Health,
-				responseJSON.MaxHealth,
-				responseJSON.Godpower,
+				"[%s] Здоровье: %d/%d; Прана: %d%%\n",
+				whereabouts,
+				data.Health,
+				data.MaxHealth,
+				data.Godpower,
 			)
 
-			lastHealth = responseJSON.Health
-			lastPrana = responseJSON.Godpower
+			lastHealth = data.Health
+			lastPrana = data.Godpower
+			lastTown = data.TownName
+			lastPillar = data.Distance
 		}
 
-		time.Sleep(time.Second * 30)
+		time.Sleep(time.Second * time.Duration(rate))
 	}
-
 }
