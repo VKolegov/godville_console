@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/joho/godotenv"
+	"godville/commands"
+	"godville/structs"
 	"io"
 	"net/http"
 	"os"
@@ -14,7 +16,7 @@ import (
 const apiUrl = "https://godville.net/gods/api/"
 
 var (
-	currentData godvilleData
+	currentData structs.GodvilleData
 )
 
 func main() {
@@ -61,7 +63,21 @@ func main() {
 			continue
 		}
 
-		fmt.Printf("Вы попытались выполнить команду %s\n", command)
+		command = strings.ToLower(command)
+
+		switch command {
+		case "квест":
+			commands.QuestStatus(currentData)
+		case "инв":
+			commands.Inventory(currentData)
+		case "инвентарь":
+			commands.Inventory(currentData)
+		case "герой":
+			commands.Hero(currentData)
+		default:
+			fmt.Printf("Вы попытались выполнить команду %s\n", command)
+		}
+
 	}
 }
 

@@ -1,6 +1,6 @@
-package main
+package structs
 
-type godvilleData struct {
+type GodvilleData struct {
 	Name              string `json:"name"`
 	Godname           string `json:"godname"`
 	Gender            string `json:"gender"`
@@ -35,5 +35,6 @@ type godvilleData struct {
 	ArenaFight     bool     `json:"arena_fight"`
 	InventoryNum   uint16   `json:"inventory_num"`
 	Quest          string   `json:"quest"`
+	Aura           string   `json:"aura"`
 	Activatables   []string `json:"activatables"`
 }
