@@ -28,8 +28,6 @@ func main() {
 		key     string
 
 		err error
-
-		command string
 	)
 
 	err = godotenv.Load("settings.cfg")
@@ -72,52 +70,7 @@ func main() {
 	}
 
 	for {
-		command = ""
-		_, _ = fmt.Scanf("%s", &command)
-
-		command = strings.TrimSpace(command)
-
-		if command == "" {
-			continue
-		}
-
-		command = strings.ToLower(command)
-
-		switch command {
-		case "квест":
-			if eCurrentData == nil {
-				commands.QuestStatus(currentData)
-			} else {
-				commands.QuestStatusExtended(eCurrentData.Hero)
-			}
-		case "инв", "инвентарь":
-			if eCurrentData == nil {
-				commands.Inventory(currentData)
-			} else {
-				commands.InventoryExtended(eCurrentData)
-			}
-		case "герой":
-			if eCurrentData == nil {
-				commands.Hero(currentData)
-			} else {
-				commands.HeroExtended(eCurrentData)
-			}
-		case "бог", "я":
-			if eCurrentData == nil {
-				commands.GodInfo(currentData)
-			} else {
-				commands.GodInfoExtended(eCurrentData, true)
-			}
-		case "команды":
-			commandList()
-		case "выход":
-			os.Exit(0)
-
-
-		default:
-			fmt.Printf("Вы попытались выполнить команду %s\n", command)
-		}
-
+		processCommands()
 	}
 }
 
@@ -171,6 +124,65 @@ func greetings() {
 	commandList()
 }
 
+func processCommands() {
+	var (
+		command string
+	)
+
+	for {
+		command = ""
+		_, _ = fmt.Scanf("%s", &command)
+
+		command = strings.TrimSpace(command)
+
+		if command == "" {
+			continue
+		}
+
+		command = strings.ToLower(command)
+
+		switch command {
+		case "квест":
+			if eCurrentData == nil {
+				commands.QuestStatus(currentData)
+			} else {
+				commands.QuestStatusExtended(eCurrentData.Hero)
+			}
+		case "инв", "инвентарь":
+			if eCurrentData == nil {
+				commands.Inventory(currentData)
+			} else {
+				commands.InventoryExtended(eCurrentData)
+			}
+		case "герой":
+			if eCurrentData == nil {
+				commands.Hero(currentData)
+			} else {
+				commands.HeroExtended(eCurrentData)
+			}
+		case "зло":
+			if eCurrentData == nil {
+				fmt.Println("Недоступно в ограниченной версии")
+			} else {
+				commands.MakeEvil(eClient)
+			}
+		case "бог", "я":
+			if eCurrentData == nil {
+				commands.GodInfo(currentData)
+			} else {
+				commands.GodInfoExtended(eCurrentData, true)
+			}
+		case "команды":
+			commandList()
+		case "выход":
+			os.Exit(0)
+
+		default:
+			fmt.Printf("Вы попытались выполнить команду %s\n", command)
+		}
+	}
+}
+
 func commandList() {
 	fmt.Println()
 	fmt.Println("Команды:")
@@ -178,6 +190,7 @@ func commandList() {
 	fmt.Println("	'инвентарь' или 'инв' 	- вывести информацию об инвентаре героя")
 	fmt.Println("	'бог' или 'я' 			- вывести информацию об себе (божестве)")
 	fmt.Println("	'квест' 				- вывести информацию о текущем задании")
+	fmt.Println("	'зло' 					- сделать зло (недоступно в огранич. версии)")
 	fmt.Println("	'команды' 				- вывести список команд")
 	fmt.Println("	'выход' 				- закрыть программу")
 	fmt.Println()

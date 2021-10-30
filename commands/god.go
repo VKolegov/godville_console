@@ -1,8 +1,11 @@
 package commands
 
 import (
+	"encoding/json"
 	"fmt"
 	"godville/structs"
+	"net/http"
+	"net/url"
 )
 
 func GodInfo(data structs.GodvilleData) {
@@ -55,4 +58,36 @@ func GodInfoExtended(eData *structs.ExtendedData, clanInfo bool)  {
 			eData.Hero.ClanPosition,
 		)
 	}
+}
+
+func MakeEvil(eClient *http.Client) {
+
+	var (
+		r *http.Response
+
+		inf structs.Influence
+
+		err error
+	)
+
+	d := url.Values{
+		"a": {"kJFiYFQT8EtYAQwiIgmiUA2VWngYQ"},
+		"b": {"W0vFCeyJhY3Rpb24iOiJwdW5pc2gifQ==GrS"},
+	}
+
+	r, _ = eClient.PostForm("https://godville.net/fbh/feed", d)
+
+	err = json.NewDecoder(r.Body).Decode(&inf)
+
+	if err != nil {
+		fmt.Printf("Ошибка при попытке совершить зло:")
+	}
+
+	if inf.Status == "success" {
+		fmt.Println("[попытка зла засчитана]")
+	} else {
+		fmt.Println("[попытка зла не засчитана]")
+	}
+
+	fmt.Printf("[влияние:зло] %s\n", inf.DisplayString)
 }
