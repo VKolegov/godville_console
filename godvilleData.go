@@ -1,6 +1,6 @@
 package main
 
-type responseJSON struct {
+type godvilleData struct {
 	Name              string `json:"name"`
 	Godname           string `json:"godname"`
 	Gender            string `json:"gender"`

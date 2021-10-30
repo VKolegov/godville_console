@@ -14,7 +14,7 @@ import (
 const apiUrl = "https://godville.net/gods/api/"
 
 var (
-	currentData responseJSON
+	currentData godvilleData
 )
 
 func main() {
