@@ -161,6 +161,8 @@ func trackHeroDataExtended() {
 		fmt.Printf("[Дневник] %s\n", lastDiaryEntry)
 	}
 
+	fmt.Println(eCurrentData.NewsFromField.Msg)
+
 	if lastHealth != eCurrentData.Hero.Health ||
 		lastPillar != eCurrentData.Hero.Distance ||
 		lastTown != eCurrentData.Hero.TownName ||
