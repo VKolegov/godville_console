@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"godville/commands"
 )
 
 var (
@@ -24,25 +25,11 @@ var (
 func trackGodData() {
 
 	if lastPrana != currentData.Godpower ||
-		lastBrickCnt != int16(currentData.BricksCnt) ||
-		lastWoodCnt != int32(currentData.WoodCnt) ||
+		(lastBrickCnt >= 0 && lastBrickCnt != int16(currentData.BricksCnt)) ||
+		(lastWoodCnt >= 0 && lastWoodCnt != int32(currentData.WoodCnt)) ||
 		lastSavingsString != currentData.Savings {
 
-		fmt.Printf("[%s] Прана: %d%%", currentData.Godname, currentData.Godpower)
-
-		if currentData.Savings != "" {
-			fmt.Printf("; Сбережений: %s", currentData.Savings)
-		}
-
-		if currentData.BricksCnt < 1000 {
-			fmt.Printf("; Золотых кирпичей: %d/1000", currentData.BricksCnt)
-		}
-
-		if currentData.WoodCnt < 1000 {
-			fmt.Printf("; Дерева: %d/1000", currentData.WoodCnt)
-		}
-
-		fmt.Print("\n")
+		commands.GodInfo(currentData)
 
 		lastPrana = currentData.Godpower
 		lastSavingsString = currentData.Savings

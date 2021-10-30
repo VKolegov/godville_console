@@ -74,6 +74,10 @@ func main() {
 			commands.Inventory(currentData)
 		case "герой":
 			commands.Hero(currentData)
+		case "бог":
+			commands.GodInfo(currentData)
+		case "я":
+			commands.GodInfo(currentData)
 		default:
 			fmt.Printf("Вы попытались выполнить команду %s\n", command)
 		}
@@ -198,5 +202,6 @@ func commandList() {
 	fmt.Println("Команды:")
 	fmt.Println("'герой' - вывести информацию о герое")
 	fmt.Println("'инвентарь' | 'инв' - вывести информацию об инвентаре героя")
+	fmt.Println("'бог' | 'я' - вывести информацию об себе (божестве)")
 	fmt.Println("'квест' - вывести информацию о текущем задании")
 }
