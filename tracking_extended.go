@@ -175,11 +175,13 @@ func trackHeroDataExtended() {
 		}
 
 		fmt.Printf(
-			"[%s] Здоровье: %d/%d; Золота: %s\n",
+			"[%s] Здоровье: %d/%d; Золота: %s; Инвентарь: %d/%d\n",
 			whereabouts,
 			eCurrentData.Hero.Health,
 			eCurrentData.Hero.MaxHealth,
 			eCurrentData.Hero.GoldWe,
+			eCurrentData.Hero.InventoryNum,
+			eCurrentData.Hero.InventoryMaxNum,
 		)
 
 		lastHealth = eCurrentData.Hero.Health
