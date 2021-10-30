@@ -96,6 +96,13 @@ func trackActivity(url string, rate int) {
 			initialRequest = false
 		}
 
+		// Превышена частота запросов к серверу
+		if currentData.Name != "" && currentData.Godname == "" {
+			fmt.Println(currentData.Name)
+			time.Sleep(time.Minute)
+			continue
+		}
+
 		if currentData.Expired == true {
 			fmt.Println("Данные устарели! Требуется зайти либо через браузер либо через клиент")
 			os.Exit(1)
