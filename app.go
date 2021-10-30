@@ -120,6 +120,7 @@ var (
 
 	lastHealth uint16 = 0
 	lastPrana  uint8  = 0
+	lastGold   string
 	lastPillar uint16 = 0
 	lastTown   string
 
@@ -186,7 +187,11 @@ func trackBasicData() {
 		fmt.Printf("[Дневник] %s\n", lastDiaryEntry)
 	}
 
-	if lastHealth != currentData.Health || lastPrana != currentData.Godpower || lastPillar != currentData.Distance || lastTown != currentData.TownName {
+	if lastHealth != currentData.Health ||
+		lastPrana != currentData.Godpower ||
+		lastPillar != currentData.Distance ||
+		lastTown != currentData.TownName ||
+		lastGold != currentData.GoldApprox {
 
 		if currentData.TownName == "" {
 			whereabouts = fmt.Sprintf("Столб #%d", currentData.Distance)
@@ -195,11 +200,12 @@ func trackBasicData() {
 		}
 
 		fmt.Printf(
-			"[%s] Здоровье: %d/%d; Прана: %d%%",
+			"[%s] Здоровье: %d/%d; Прана: %d%%; Золота: %s",
 			whereabouts,
 			currentData.Health,
 			currentData.MaxHealth,
 			currentData.Godpower,
+			currentData.GoldApprox,
 		)
 
 		if currentData.BricksCnt < 1000 {
