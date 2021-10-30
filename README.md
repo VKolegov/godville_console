@@ -1,5 +1,8 @@
 # Консольный клиент Godville 
 
+<img width="884" alt="image" src="https://user-images.githubusercontent.com/6131352/139556183-8c2281d6-70c2-47e1-873f-75f8e72cf67f.png">
+
+
 ### Настройка
 
 1. Открываем settings.cfg любым текстовым редактором
