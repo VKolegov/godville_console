@@ -21,10 +21,6 @@ func processAutoEvilInfluence() {
 		err error
 	)
 
-	if eCurrentData.Hero.MonsterName == "" {
-		return
-	}
-
 	autoEvilInfluenceThresholdStr := strings.TrimSpace(
 		os.Getenv("AUTO_EVIL_INFLUENCE_THRESHOLD"),
 	)
@@ -43,7 +39,7 @@ func processAutoEvilInfluence() {
 		fmt.Printf("Ошибка при парсинге AUTO_EVIL_INFLUENCE_THRESHOLD: %s\n", err.Error())
 		return
 	}
-	
+
 	if monsterProgressThresholdStr != "" {
 		monsterProgressThreshold, err = strconv.Atoi(autoEvilInfluenceThresholdStr)
 
@@ -61,9 +57,9 @@ func processAutoEvilInfluence() {
 		}
 	}
 
-
-	// Если хватает праны и прогресс не больше чем указанный
-	if eCurrentData.Hero.Godpower >= uint8(autoEvilInfluenceThreshold) &&
+	// Если в бою, хватает праны и прогресс битвы не больше чем указанный
+	if eCurrentData.Hero.MonsterName != "" &&
+		eCurrentData.Hero.Godpower >= uint8(autoEvilInfluenceThreshold) &&
 		eCurrentData.Hero.MonsterProgress <= uint16(monsterProgressThreshold) {
 
 		fmt.Println("[auto] Делаем автоматическое зло в бою...")
