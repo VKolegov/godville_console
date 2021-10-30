@@ -39,7 +39,7 @@ type ExtendedData struct {
 		Evilm3 int `json:"evilm_3"`
 		Wood3  int `json:"wood_3"`
 		Wood2  int `json:"wood_2"`
-	} `json:"gca"`
+	} `json:"gca"` // Прогресс по заслугам
 	Gcak struct {
 		Reglr  string `json:"reglr"`
 		Sk5    string `json:"sk5"`
@@ -61,19 +61,19 @@ type ExtendedData struct {
 		Gcard  string `json:"gcard"`
 		Wood3  string `json:"wood_3"`
 	} `json:"gcak"`
-	Gcid          string        `json:"gcid"`
+	Gcid          string        `json:"gcid"` // TODO: ?
 	Pet           Pet           `json:"pet"`
 	HasPet        bool          `json:"has_pet"`
-	Hints         []interface{} `json:"hints"`
+	Hints         []interface{} `json:"hints"` // TODO: ?
 	NewsFromField struct {
 		Time time.Time `json:"time"`
 		Msg  string    `json:"msg"`
-	} `json:"news_from_field"`
+	} `json:"news_from_field"` // Вести с полей
 	Diary []struct {
 		Time time.Time `json:"time"`
 		Msg  string    `json:"msg"`
 		I    int       `json:"i"`
-		Infl bool      `json:"infl,omitempty"`
+		Infl bool      `json:"infl,omitempty"` // Результат влияния
 	} `json:"diary"`
 	ImpE []struct {
 		Time      time.Time `json:"time"`
@@ -82,9 +82,9 @@ type ExtendedData struct {
 		Arena     string    `json:"arena,omitempty"`
 		I         int       `json:"i"`
 		UphAuthor string    `json:"uph_author,omitempty"`
-	} `json:"imp_e"`
-	GcMid  int    `json:"gc_mid"`
-	GcMidK int    `json:"gc_mid_k"`
-	GcN    string `json:"gc_n"`
-	Lbp    int    `json:"lbp"`
+	} `json:"imp_e"` // Важные записи в дневнике
+	GcMid  int    `json:"gc_mid"`   // TODO: ?
+	GcMidK int    `json:"gc_mid_k"` // TODO: ?
+	GcN    string `json:"gc_n"`     // TODO: ?
+	Lbp    int    `json:"lbp"`      // TODO: ?
 }

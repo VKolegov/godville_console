@@ -1,81 +1,81 @@
 package structs
 
 type Hero struct {
-	Name                string        `json:"name"`
-	Godname             string        `json:"godname"`
-	Gender              string        `json:"gender"`
-	GGender             string        `json:"g_gender"`
-	GoldApprox          string        `json:"gold_approx"`
-	Level               int           `json:"level"`
-	Quest               string        `json:"quest"`
-	QuestProgress       int           `json:"quest_progress"`
-	ExpProgress         int           `json:"exp_progress"`
-	Health              uint16        `json:"health"`
-	MaxHealth           uint16        `json:"max_health"`
-	InventoryNum        uint16           `json:"inventory_num"`
-	InventoryMaxNum     uint16           `json:"inventory_max_num"`
-	Alignment           string        `json:"alignment"`
-	Motto               string        `json:"motto"`
-	Clan                string        `json:"clan"`
-	TimeZone            string        `json:"time_zone"`
-	DiaryLast           string        `json:"diary_last"`
-	TempleCompletedAt   string        `json:"temple_completed_at"`
-	MfAt                interface{}   `json:"mf_at"`
-	ArkCompletedAt      string        `json:"ark_completed_at"`
-	Distance            uint16        `json:"distance"`
-	TownName            string        `json:"town_name"`
-	InTown              bool          `json:"in_town"`
-	ArenaFight          bool          `json:"arena_fight"`
-	BricksCnt           int           `json:"bricks_cnt"`
-	Wood                string        `json:"wood"`
-	WoodCnt             int           `json:"wood_cnt"`
-	Godpower            uint8         `json:"godpower"`
-	ClanPosition        string        `json:"clan_position"`
-	ACmd                bool          `json:"a_cmd"`
-	PetsMax             int           `json:"pets_max"`
-	AuraName            string        `json:"aura_name"`
-	Retirement          string        `json:"retirement"`
-	Au                  int           `json:"au"`
-	UPhr                bool          `json:"u_phr"`
-	ArenaWon            int           `json:"arena_won"`
-	ArenaLost           int           `json:"arena_lost"`
-	InventorySerial     int           `json:"inventory_serial"`
-	MaxGp               int           `json:"max_gp"`
-	Gold                int           `json:"gold"`
-	GoldWe              string        `json:"gold_we"`
-	MonstersKilled      int           `json:"monsters_killed"`
-	DeathCount          int           `json:"death_count"`
-	IsArenaAvailable    bool          `json:"is_arena_available"`
-	DA                  bool          `json:"d_a"`
-	SA                  bool          `json:"s_a"`
-	RA                  bool          `json:"r_a"`
-	IsChfAvailable      bool          `json:"is_chf_available"`
-	ChfPending          string        `json:"chf_pending"`
-	AgeStr              string        `json:"age_str"`
-	Accumulator         float32       `json:"accumulator"`
-	QuestsCompleted     int           `json:"quests_completed"`
-	Aln                 string        `json:"aln"`
-	Dir                 string        `json:"dir"`
-	MId                 string        `json:"m_id"`
-	MIdN                string        `json:"m_id_n"`
-	MonsterName         string        `json:"monster_name"`
-	MonsterProgress     uint16        `json:"monster_progress"`
-	SProgress           float64       `json:"s_progress"`
-	ArenaSendAfter      int           `json:"arena_send_after"`
-	DSendAfter          int           `json:"d_send_after"`
-	SSendAfter          int           `json:"s_send_after"`
-	RAfter              int           `json:"r_after"`
-	RT                  interface{}   `json:"r_t"`
-	ChfrAfter           int           `json:"chfr_after"`
-	IsArenaDisabled     bool          `json:"is_arena_disabled"`
-	AuraTime            int           `json:"aura_time"`
-	Q2T                 string        `json:"q2t"`
-	Q2                  []interface{} `json:"q2"`
-	CTown               string        `json:"c_town"`
-	Lte                 string        `json:"lte"`
-	Poi                 []int         `json:"poi"`
-	InvM                string        `json:"inv_m"`
-	InvitesLeft         int           `json:"invites_left"`
-	Ggender             string        `json:"ggender"`
-	ArenaGodCmdDisabled bool          `json:"arena_god_cmd_disabled"`
+	Name                string        `json:"name"`                   // Имя героя
+	Godname             string        `json:"godname"`                // Имя бога
+	Gender              string        `json:"gender"`                 // Пол
+	GGender             string        `json:"g_gender"`               // Пол (бога?)
+	GoldApprox          string        `json:"gold_approx"`            // Приблизительное кол-во золота
+	Level               int           `json:"level"`                  // Уровень героя
+	Quest               string        `json:"quest"`                  // Название квеста
+	QuestProgress       int           `json:"quest_progress"`         // Прогресс квеста в процентах
+	ExpProgress         int           `json:"exp_progress"`           // Прогресс опыта до сл. уровня (в процентах)
+	Health              uint16        `json:"health"`                 // Здоровье
+	MaxHealth           uint16        `json:"max_health"`             // Макс. здоровье
+	InventoryNum        uint16        `json:"inventory_num"`          // Кол-во вещей в инвентаре
+	InventoryMaxNum     uint16        `json:"inventory_max_num"`      // Максимальное кол-во вещей в инвентаре
+	Alignment           string        `json:"alignment"`              // Характер
+	Motto               string        `json:"motto"`                  // Девиз
+	Clan                string        `json:"clan"`                   // Название клана
+	TimeZone            string        `json:"time_zone"`              // Название города (временная зона)
+	DiaryLast           string        `json:"diary_last"`             // Последняя запись в дневнике
+	TempleCompletedAt   string        `json:"temple_completed_at"`    // Когда завершилось строительство храма
+	MfAt                interface{}   `json:"mf_at"`                  // TODO: ?
+	ArkCompletedAt      string        `json:"ark_completed_at"`       // Когда завершилось строительство ковчега
+	Distance            uint16        `json:"distance"`               // Номер столба от столицы
+	TownName            string        `json:"town_name"`              // Название города
+	InTown              bool          `json:"in_town"`                // Находится ли герой в городе
+	ArenaFight          bool          `json:"arena_fight"`            // Находится ли герой в битве (босс, арена, подземелье)
+	BricksCnt           int           `json:"bricks_cnt"`             // Количество собранных золотых кирпичей
+	Wood                string        `json:"wood"`                   // Количество собранной древесины для ковчега в процентах
+	WoodCnt             int           `json:"wood_cnt"`               // Количество собранной древесины
+	Godpower            uint8         `json:"godpower"`               // Количество праны
+	ClanPosition        string        `json:"clan_position"`          // Должность в гильдии
+	ACmd                bool          `json:"a_cmd"`                  // TODO: ?
+	PetsMax             int           `json:"pets_max"`               // TODO: ?
+	AuraName            string        `json:"aura_name"`              // TODO: название ауры
+	Retirement          string        `json:"retirement"`             // Количество сбережений
+	Au                  int           `json:"au"`                     // TODO: ?
+	UPhr                bool          `json:"u_phr"`                  // TODO: ?
+	ArenaWon            int           `json:"arena_won"`              // Побед на арене
+	ArenaLost           int           `json:"arena_lost"`             // Поражений на арене
+	InventorySerial     int           `json:"inventory_serial"`       // Номер инвентаря?
+	MaxGp               int           `json:"max_gp"`                 // Максимальное количество праны
+	Gold                int           `json:"gold"`                   // Количество золота точное
+	GoldWe              string        `json:"gold_we"`                // Количество золото точное текстом
+	MonstersKilled      int           `json:"monsters_killed"`        // Убито монстров
+	DeathCount          int           `json:"death_count"`            // Смертей
+	IsArenaAvailable    bool          `json:"is_arena_available"`     // Доступна ли арена
+	DA                  bool          `json:"d_a"`                    // TODO: ?
+	SA                  bool          `json:"s_a"`                    // TODO: ?
+	RA                  bool          `json:"r_a"`                    // TODO: ?
+	IsChfAvailable      bool          `json:"is_chf_available"`       // TODO: ?
+	ChfPending          string        `json:"chf_pending"`            // TODO: ?
+	AgeStr              string        `json:"age_str"`                // Возраст (времени с регистрации)
+	Accumulator         float32       `json:"accumulator"`            // Количество зарядов праны
+	QuestsCompleted     int           `json:"quests_completed"`       // Количество завершенных квестов
+	Aln                 string        `json:"aln"`                    // Общее описание характера? bad/good
+	Dir                 string        `json:"dir"`                    // Направление движения
+	MId                 string        `json:"m_id"`                   // TODO: ?
+	MIdN                string        `json:"m_id_n"`                 // TODO: ?
+	MonsterName         string        `json:"monster_name"`           // Имя монстра
+	MonsterProgress     uint16        `json:"monster_progress"`       // Прогресс битвы с монстром
+	SProgress           float64       `json:"s_progress"`             // TODO: ?
+	ArenaSendAfter      int           `json:"arena_send_after"`       // TODO: ?
+	DSendAfter          int           `json:"d_send_after"`           // TODO: ?
+	SSendAfter          int           `json:"s_send_after"`           // TODO: ?
+	RAfter              int           `json:"r_after"`                // TODO: ?
+	RT                  interface{}   `json:"r_t"`                    // TODO: ?
+	ChfrAfter           int           `json:"chfr_after"`             // TODO: ?
+	IsArenaDisabled     bool          `json:"is_arena_disabled"`      // TODO: ?
+	AuraTime            int           `json:"aura_time"`              // Время до окончания ауры
+	Q2T                 string        `json:"q2t"`                    // TODO: ?
+	Q2                  []interface{} `json:"q2"`                     // TODO: ?
+	CTown               string        `json:"c_town"`                 // TODO: ?
+	Lte                 string        `json:"lte"`                    // TODO: ?
+	Poi                 []int         `json:"poi"`                    // Точки интереса (номера столбов)
+	InvM                string        `json:"inv_m"`                  // TODO: ?
+	InvitesLeft         int           `json:"invites_left"`           // Осталось инвайтов
+	Ggender             string        `json:"ggender"`                // Пол (бога?)
+	ArenaGodCmdDisabled bool          `json:"arena_god_cmd_disabled"` // Пульт отключен в режиме арены
 }
