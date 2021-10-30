@@ -125,7 +125,8 @@ func trackActivity(url string, rate int) {
 			continue
 		}
 
-		trackBasicData()
+		trackGodData()
+		trackHeroData()
 
 		if currentData.TempleCompletedAt == "" {
 			trackBricks()

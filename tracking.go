@@ -17,40 +17,18 @@ var (
 	lastBrickCnt int16 = -1
 	lastWoodCnt  int32 = -1
 
-	lastSavings int32 = -1
+	lastSavings       int32 = -1
+	lastSavingsString string
 )
 
-func trackBasicData() {
+func trackGodData() {
 
-	var (
-		whereabouts string
-	)
+	if lastPrana != currentData.Godpower ||
+		lastBrickCnt != int16(currentData.BricksCnt) ||
+		lastWoodCnt != int32(currentData.WoodCnt) ||
+		lastSavingsString != currentData.Savings {
 
-	if lastDiaryEntry != currentData.DiaryLast {
-		lastDiaryEntry = currentData.DiaryLast
-		fmt.Printf("[Дневник] %s\n", lastDiaryEntry)
-	}
-
-	if lastHealth != currentData.Health ||
-		lastPrana != currentData.Godpower ||
-		lastPillar != currentData.Distance ||
-		lastTown != currentData.TownName ||
-		lastGold != currentData.GoldApprox {
-
-		if currentData.TownName == "" {
-			whereabouts = fmt.Sprintf("Столб #%d", currentData.Distance)
-		} else {
-			whereabouts = fmt.Sprintf("%s (ст. %d)", currentData.TownName, currentData.Distance)
-		}
-
-		fmt.Printf(
-			"[%s] Здоровье: %d/%d; Прана: %d%%; Золота: %s",
-			whereabouts,
-			currentData.Health,
-			currentData.MaxHealth,
-			currentData.Godpower,
-			currentData.GoldApprox,
-		)
+		fmt.Printf("[%s] Прана: %d%%", currentData.Godname, currentData.Godpower)
 
 		if currentData.Savings != "" {
 			fmt.Printf("; Сбережений: %s", currentData.Savings)
@@ -66,13 +44,46 @@ func trackBasicData() {
 
 		fmt.Print("\n")
 
-		lastHealth = currentData.Health
 		lastPrana = currentData.Godpower
+		lastSavingsString = currentData.Savings
+	}
+}
+
+func trackHeroData() {
+	var (
+		whereabouts string
+	)
+
+	if lastDiaryEntry != currentData.DiaryLast {
+		lastDiaryEntry = currentData.DiaryLast
+		fmt.Printf("[%s][Дневник] %s\n", currentData.Name, lastDiaryEntry)
+	}
+
+	if lastHealth != currentData.Health ||
+		lastPillar != currentData.Distance ||
+		lastTown != currentData.TownName ||
+		lastGold != currentData.GoldApprox {
+
+		if currentData.TownName == "" {
+			whereabouts = fmt.Sprintf("Столб #%d", currentData.Distance)
+		} else {
+			whereabouts = fmt.Sprintf("%s (ст. %d)", currentData.TownName, currentData.Distance)
+		}
+
+		fmt.Printf(
+			"[%s][%s] Здоровье: %d/%d; Золота: %s\n",
+			currentData.Name,
+			whereabouts,
+			currentData.Health,
+			currentData.MaxHealth,
+			currentData.GoldApprox,
+		)
+
+		lastHealth = currentData.Health
 		lastTown = currentData.TownName
 		lastPillar = currentData.Distance
 		lastGold = currentData.GoldApprox
 	}
-
 }
 
 func trackBricks() {
