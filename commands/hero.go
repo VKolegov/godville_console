@@ -67,7 +67,6 @@ func InventoryExtended(eData *structs.ExtendedData) {
 	fmt.Printf("Инвентарь: %d/%d\n", eData.Hero.InventoryNum, eData.Hero.InventoryMaxNum)
 
 	if len(eData.Inventory) == 0 {
-		fmt.Println()
 		return
 	}
 

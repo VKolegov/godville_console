@@ -54,6 +54,9 @@ func trackExtended(rate int) {
 
 		r, _ = eClient.PostForm("https://godville.net/fbh/feed", d)
 
+		// clearing up
+		data.Inventory = make(map[string]structs.InventoryItem)
+
 		err = json.NewDecoder(r.Body).Decode(&data)
 
 		if err != nil {
