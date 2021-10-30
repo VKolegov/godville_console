@@ -66,6 +66,11 @@ func main() {
 			fmt.Printf("Error while reading body: %s\n", err.Error())
 		}
 
+		if responseJSON.Expired == true {
+			fmt.Println("Данные устарели! Требуется зайти либо через браузер либо через клиент")
+			os.Exit(1)
+		}
+
 		if lastDiaryEntry != responseJSON.DiaryLast {
 			lastDiaryEntry = responseJSON.DiaryLast
 			fmt.Printf("%s\n", lastDiaryEntry)
