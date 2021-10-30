@@ -164,7 +164,10 @@ func trackHeroDataExtended() {
 		fmt.Printf("[Дневник] %s\n", lastDiaryEntry)
 	}
 
-	fmt.Println(eCurrentData.NewsFromField.Msg)
+	if lastNewsFromTheField != eCurrentData.NewsFromField.Msg {
+		fmt.Println(eCurrentData.NewsFromField.Msg)
+		lastNewsFromTheField = eCurrentData.NewsFromField.Msg
+	}
 
 	if lastHealth != eCurrentData.Hero.Health ||
 		lastPillar != eCurrentData.Hero.Distance ||
@@ -208,8 +211,6 @@ func trackFight() {
 
 			lastMonsterProgress = eCurrentData.Hero.MonsterProgress
 		}
-
-		fmt.Println(eCurrentData.NewsFromField.Msg)
 
 	} else {
 		lastMonsterProgress = 0

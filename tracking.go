@@ -12,6 +12,7 @@ import (
 
 var (
 	lastDiaryEntry string
+	lastNewsFromTheField string
 
 	lastHealth uint16 = 0
 	lastPrana  uint8  = 0
