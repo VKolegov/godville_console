@@ -105,7 +105,8 @@ func trackActivity(url string, rate int) {
 
 		if currentData.Expired == true {
 			fmt.Println("Данные устарели! Требуется зайти либо через браузер либо через клиент")
-			os.Exit(1)
+			time.Sleep(time.Minute)
+			continue
 		}
 
 		trackBasicData()
