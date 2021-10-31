@@ -172,6 +172,12 @@ func processCommands() {
 			} else {
 				commands.MakeEvil(eClient)
 			}
+		case "добро":
+			if eCurrentData == nil {
+				fmt.Println("Недоступно в ограниченной версии")
+			} else {
+				commands.MakeGood(eClient)
+			}
 		case "бог", "я":
 			if eCurrentData == nil {
 				commands.GodInfo(currentData)
@@ -194,9 +200,10 @@ func commandList() {
 	fmt.Println("Команды:")
 	fmt.Println("	'герой' 					- вывести информацию о герое")
 	fmt.Println("	'инвентарь' или 'инв' 		- вывести информацию об инвентаре героя")
-	fmt.Println("	'снаряжение' или 'снар' 	- вывести информацию о снаряжении героя")
+	fmt.Println("	'снаряжение' или 'снар' 	- вывести информацию о снаряжении героя (недоступно в огранич. версии)")
 	fmt.Println("	'бог' или 'я' 				- вывести информацию об себе (божестве)")
 	fmt.Println("	'квест' 					- вывести информацию о текущем задании")
+	fmt.Println("	'добро' 					- сделать добро (недоступно в огранич. версии)")
 	fmt.Println("	'зло' 						- сделать зло (недоступно в огранич. версии)")
 	fmt.Println("	'команды' 					- вывести список команд")
 	fmt.Println("	'выход' 					- закрыть программу")

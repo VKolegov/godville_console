@@ -110,3 +110,51 @@ func MakeEvil(eClient *http.Client) {
 
 	fmt.Printf("[влияние:зло] %s\n", inf.DisplayString)
 }
+
+func MakeGood(eClient *http.Client) {
+	var (
+		r *http.Response
+
+		inf structs.Influence
+
+		err error
+	)
+
+	rData := map[string]interface{}{
+		"action": "encourage",
+		//"confirm": "1", // could be present, maybe it has something to do with arena
+		//"cid":     nil, // could be present, maybe it has something to do with arena
+		//"s":       nil, // could be present, maybe it has something to do with arena
+	}
+
+	rDataEncoded, err := json.Marshal(rData)
+
+	if err != nil {
+		fmt.Printf("Error while encoding good request: %s\n", err)
+	}
+
+	a := enc.Vm("5JgMUahE1BYdtf7quoWz")
+	b := enc.Wm(rDataEncoded)
+
+	d := url.Values{
+		"a": {a}, // e.g. kJFiYFQT8EtYAQwiIgmiUA2VWngYQ
+		"b": {b}, // e.g. W0vFCeyJhY3Rpb24iOiJwdW5pc2gifQ==GrS
+	}
+
+	r, _ = eClient.PostForm("https://godville.net/fbh/feed", d)
+
+	err = json.NewDecoder(r.Body).Decode(&inf)
+
+	if err != nil {
+		fmt.Printf("Ошибка при попытке совершить добро: %s", err.Error())
+		return
+	}
+	//
+	if inf.Status == "success" {
+		fmt.Println("[попытка добра засчитана]")
+	} else {
+		fmt.Println("[попытка добра не засчитана]")
+	}
+
+	fmt.Printf("[влияние:добро] %s\n", inf.DisplayString)
+}
