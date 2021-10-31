@@ -1,12 +1,9 @@
 package commands
 
 import (
-	"encoding/json"
 	"fmt"
-	"godville/enc"
 	"godville/structs"
 	"net/http"
-	"net/url"
 	"strings"
 )
 
@@ -123,9 +120,6 @@ func printEquipmentItem(item structs.EquipmentItem) {
 
 func UseItem(id int, inventory map[string]structs.InventoryItem, c *http.Client) {
 	var (
-		r *http.Response
-
-		response structs.GenericResponse
 		itemName string
 		item     structs.InventoryItem
 
@@ -138,37 +132,21 @@ func UseItem(id int, inventory map[string]structs.InventoryItem, c *http.Client)
 		}
 	}
 
-	rData := map[string]string{
-		"id": itemName,
-	}
-
-	rDataEncoded, err := json.Marshal(rData)
-
-	if err != nil {
-		fmt.Printf("Error while encoding item request: %s\n", err)
-	}
-
-	a := enc.Vm("agQHqM4rCoT0CaDvq44I")
-	b := enc.Wm(rDataEncoded)
-
-	d := url.Values{
-		"a": {a}, // e.g. 9FwH2ahcM6oMrfS4DfuMyv1gcJksp
-		"b": {b}, // e.g. DvApzeyJpZCI6ItGB0LLQtdGC0Y/RidGD0Y7RgdGPINGC0YvQutCy0YMifQ==9is // светящуюся тыкву
-	}
-
-	r, _ = c.PostForm("https://godville.net/fbh/feed", d)
-
-	err = json.NewDecoder(r.Body).Decode(&response)
-
-	if err != nil {
-		fmt.Printf("Ошибка при попытке распознать результат исп предмета: %s", err.Error())
+	if item.ActivateByUser == false {
+		fmt.Printf("[Инвентарь] %s нельзя активировать\n", itemName)
 		return
 	}
 
-	if response.Status != "success" {
-		fmt.Println("[не удалось донести запрос до сервера]")
-		fmt.Printf("%+v\n", response)
+	rData := map[string]interface{}{
+		"id": itemName,
 	}
 
-	fmt.Printf("[Инвентарь] %s Активировали %s!\n", itemName)
+	_, err = MakeFeedPostRequest(c, "agQHqM4rCoT0CaDvq44I", rData)
+
+	if err != nil {
+		fmt.Printf("[Инвентарь] Не смогли активировать %s, причина: %s", itemName, err.Error())
+		return
+	}
+
+	fmt.Printf("[Инвентарь] Активировали %s!\n", itemName)
 }

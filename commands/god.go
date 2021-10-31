@@ -3,10 +3,8 @@ package commands
 import (
 	"encoding/json"
 	"fmt"
-	"godville/enc"
 	"godville/structs"
 	"net/http"
-	"net/url"
 )
 
 func GodInfo(data structs.GodvilleData) {
@@ -61,112 +59,74 @@ func GodInfoExtended(eData *structs.ExtendedData, clanInfo bool) {
 	}
 }
 
-func MakeInfluence(infType string, eData *structs.ExtendedData, eClient *http.Client) {
+func MakeInfluence(influenceType string, eData *structs.ExtendedData, eClient *http.Client) {
 	var (
-		r *http.Response
+		influenceResponse structs.Influence
+		influenceName     string
 
-		inf     structs.Influence
-		infName string
+		responseBody []byte
 
 		err error
 	)
 
-	switch infType {
+	switch influenceType {
 	case "punish":
-		infName = "зло"
+		influenceName = "зло"
 	case "encourage":
-		infName = "добро"
+		influenceName = "добро"
 	default:
 		return
 	}
 
 	if eData.Hero.Godpower < 25 {
-		fmt.Printf("На %s, увы, силёнок не хватает\n", infName)
+		fmt.Printf("На %s, увы, силёнок не хватает\n", influenceName)
 		return
 	}
 
 	rData := map[string]interface{}{
-		"action": infType,
+		"action": influenceType,
 		//"confirm": "1", // could be present, maybe it has something to do with arena
 		//"cid":     nil, // could be present, maybe it has something to do with arena
 		//"s":       nil, // could be present, maybe it has something to do with arena
 	}
 
-	rDataEncoded, err := json.Marshal(rData)
+	responseBody, err = MakeFeedPostRequest(eClient, "5JgMUahE1BYdtf7quoWz", rData)
 
 	if err != nil {
-		fmt.Printf("Error while encoding influence request: %s\n", err)
-	}
-
-	a := enc.Vm("5JgMUahE1BYdtf7quoWz")
-	b := enc.Wm(rDataEncoded)
-
-	d := url.Values{
-		"a": {a}, // e.g. kJFiYFQT8EtYAQwiIgmiUA2VWngYQ
-		"b": {b}, // e.g. W0vFCeyJhY3Rpb24iOiJwdW5pc2gifQ==GrS
-	}
-
-	r, _ = eClient.PostForm("https://godville.net/fbh/feed", d)
-
-	err = json.NewDecoder(r.Body).Decode(&inf)
-
-	if err != nil {
-		fmt.Printf("Ошибка при попытке распознать результат влияния: %s", err.Error())
+		fmt.Printf("[Влияние:%s] Не удалось повлиять. Причина: %s", influenceName, err.Error())
 		return
 	}
 
-	if inf.Status != "success" {
-		fmt.Println("[не удалось донести влияние до сервера]")
-		fmt.Printf("%+v\n", inf)
+	err = json.Unmarshal(responseBody, &influenceResponse)
+
+	if err != nil {
+		fmt.Printf("[Влияние:%s] Не удалось распознать результат влияния: %s", influenceName, err.Error())
+		return
 	}
 
-	fmt.Printf("[влияние:%s] %s\n", infName, inf.DisplayString)
+	fmt.Printf("[Влияние:%s] %s\n", influenceName, influenceResponse.DisplayString)
 }
 
-func ResurrectHero(c *http.Client) {
+func ResurrectHero(c *http.Client, d *structs.ExtendedData) {
 	var (
-		r *http.Response
-
-		response structs.GenericResponse
-
 		err error
 	)
+
+	if d.Hero.Health > 0 {
+		fmt.Printf("%s здоров как бык!... По крайней мере, ещё дышит\n", d.Hero.Name)
+		return
+	}
 
 	rData := map[string]interface{}{
 		"action": "resurrect",
 	}
 
-	rDataEncoded, err := json.Marshal(rData)
+	_, err = MakeFeedPostRequest(c, "5JgMUahE1BYdtf7quoWz", rData)
 
 	if err != nil {
-		fmt.Printf("Error while encoding resurrection request: %s\n", err)
+		fmt.Printf("[Оживление] Ошибка при попытке оживить героя: %s\n", err.Error())
 		return
 	}
 
-	a := enc.Vm("5JgMUahE1BYdtf7quoWz")
-	b := enc.Wm(rDataEncoded)
-
-	d := url.Values{
-		"a": {a}, // e.g. 9FwH2ahcM6oMrfS4DfuMyv1gcJksp
-		"b": {b},
-	}
-
-	r, _ = c.PostForm("https://godville.net/fbh/feed", d)
-
-	err = json.NewDecoder(r.Body).Decode(&response)
-
-	if err != nil {
-		fmt.Printf("Ошибка при попытке оживить героя: %s", err.Error())
-		return
-	}
-
-	if response.Status != "success" {
-		fmt.Println("[не удалось донести запрос до сервера]")
-		fmt.Printf("%+v\n", response)
-	}
-
-	fmt.Printf("Герой оживлён!\n")
-	if response.Msg != "" {
-		fmt.Println(response.Msg)
-	}
+	fmt.Printf("[Оживление] Герой оживлён!\n")
 }

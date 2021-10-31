@@ -194,7 +194,7 @@ func processCommands() {
 			if eCurrentData == nil {
 				fmt.Println("Недоступно в ограниченной версии")
 			} else {
-				commands.ResurrectHero(eClient)
+				commands.ResurrectHero(eClient, eCurrentData)
 			}
 		case "бог", "я":
 			if eCurrentData == nil {
