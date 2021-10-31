@@ -10,6 +10,15 @@ import (
 
 func processAutoInfluence() {
 	processAutoEvilInfluence()
+	processAutoResurrection()
+}
+
+func processAutoResurrection() {
+	// TODO: параметризовать в конфиг-файле (вкл/выкл)
+	if eCurrentData.Hero.Health == 0 {
+		fmt.Println("[Автооживление] Какой кошмар! Герой погиб! Ну ничего, пара живительных молний...")
+		commands.ResurrectHero(eClient, eCurrentData)
+	}
 }
 
 func processAutoEvilInfluence() {

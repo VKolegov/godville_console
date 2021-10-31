@@ -50,9 +50,9 @@ func trackExtended(rate int) {
 		// {"zpg":false,"d":"godville.net","p":"","td":"","u1":"wss://s2.godville.net:443/wshero","u2":"/fbh/feed?a=GjZLI9oQGPkBZMqMMMP3KYBRVcqmu"}
 		// "u1" is web socket url
 		// so, "u2" field is basically poll url
-		pollUrl string = "https://godville.net/fbh/feed?a=GjZLI9oQGPkBZMqMMMP3KYBRVcqmu"
+		pollUrl      string = "https://godville.net/fbh/feed?a=GjZLI9oQGPkBZMqMMMP3KYBRVcqmu"
 		pollQueryUrl string
-		cnt uint = 0
+		cnt          uint = 0
 
 		err error
 	)
@@ -180,34 +180,35 @@ func trackGodDataExtended() {
 
 func trackHeroDataExtended() {
 	var (
+		hero        structs.Hero = eCurrentData.Hero
 		whereabouts string
 	)
 
-	if lastHealth != eCurrentData.Hero.Health ||
-		lastPillar != eCurrentData.Hero.Distance ||
-		lastTown != eCurrentData.Hero.TownName ||
-		lastGold != eCurrentData.Hero.GoldWe {
+	if lastHealth != hero.Health ||
+		lastPillar != hero.Distance ||
+		lastTown != hero.TownName ||
+		lastGold != hero.GoldWe {
 
-		if eCurrentData.Hero.TownName == "" {
-			whereabouts = fmt.Sprintf("Столб #%d", eCurrentData.Hero.Distance)
+		if hero.TownName == "" {
+			whereabouts = fmt.Sprintf("Столб #%d", hero.Distance)
 		} else {
-			whereabouts = fmt.Sprintf("%s (ст. %d)", eCurrentData.Hero.TownName, eCurrentData.Hero.Distance)
+			whereabouts = fmt.Sprintf("%s (ст. %d)", hero.TownName, hero.Distance)
 		}
 
 		fmt.Printf(
 			"[%s] Здоровье: %d/%d; Золота: %s; Инвентарь: %d/%d\n",
 			whereabouts,
-			eCurrentData.Hero.Health,
-			eCurrentData.Hero.MaxHealth,
-			eCurrentData.Hero.GoldWe,
-			eCurrentData.Hero.InventoryNum,
-			eCurrentData.Hero.InventoryMaxNum,
+			hero.Health,
+			hero.MaxHealth,
+			hero.GoldWe,
+			hero.InventoryNum,
+			hero.InventoryMaxNum,
 		)
 
-		lastHealth = eCurrentData.Hero.Health
-		lastTown = eCurrentData.Hero.TownName
-		lastPillar = eCurrentData.Hero.Distance
-		lastGold = eCurrentData.Hero.GoldWe
+		lastHealth = hero.Health
+		lastTown = hero.TownName
+		lastPillar = hero.Distance
+		lastGold = hero.GoldWe
 	}
 }
 
