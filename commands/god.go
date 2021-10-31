@@ -3,6 +3,7 @@ package commands
 import (
 	"encoding/json"
 	"fmt"
+	"godville/enc"
 	"godville/structs"
 	"net/http"
 	"net/url"
@@ -27,7 +28,7 @@ func GodInfo(data structs.GodvilleData) {
 	fmt.Print("\n")
 }
 
-func GodInfoExtended(eData *structs.ExtendedData, clanInfo bool)  {
+func GodInfoExtended(eData *structs.ExtendedData, clanInfo bool) {
 
 	fmt.Printf(
 		"[%s] Прана: %d%% (зарядов: %.0f)",
@@ -70,9 +71,25 @@ func MakeEvil(eClient *http.Client) {
 		err error
 	)
 
+	rData := map[string]interface{}{
+		"action": "punish",
+		//"confirm": "1", // could be present, maybe it has something to do with arena
+		//"cid":     nil, // could be present, maybe it has something to do with arena
+		//"s":       nil, // could be present, maybe it has something to do with arena
+	}
+
+	rDataEncoded, err := json.Marshal(rData)
+
+	if err != nil {
+		fmt.Printf("Error while encoding punish request: %s\n", err)
+	}
+
+	a := enc.Vm("5JgMUahE1BYdtf7quoWz")
+	b := enc.Wm(rDataEncoded)
+
 	d := url.Values{
-		"a": {"kJFiYFQT8EtYAQwiIgmiUA2VWngYQ"},
-		"b": {"W0vFCeyJhY3Rpb24iOiJwdW5pc2gifQ==GrS"},
+		"a": {a}, // e.g. kJFiYFQT8EtYAQwiIgmiUA2VWngYQ
+		"b": {b}, // e.g. W0vFCeyJhY3Rpb24iOiJwdW5pc2gifQ==GrS
 	}
 
 	r, _ = eClient.PostForm("https://godville.net/fbh/feed", d)
@@ -80,13 +97,15 @@ func MakeEvil(eClient *http.Client) {
 	err = json.NewDecoder(r.Body).Decode(&inf)
 
 	if err != nil {
-		fmt.Printf("Ошибка при попытке совершить зло:")
+		fmt.Printf("Ошибка при попытке совершить зло: %s", err.Error())
+		return
 	}
 
 	if inf.Status == "success" {
 		fmt.Println("[попытка зла засчитана]")
 	} else {
 		fmt.Println("[попытка зла не засчитана]")
+		fmt.Printf("%+v\n", inf)
 	}
 
 	fmt.Printf("[влияние:зло] %s\n", inf.DisplayString)
