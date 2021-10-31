@@ -64,7 +64,7 @@ func main() {
 	}
 
 	if eClient != nil {
-		go trackExtended(30)
+		go trackExtended(10)
 	} else {
 		go trackBasic(fullUrl, 30)
 	}
@@ -186,6 +186,18 @@ func processCommands() {
 			}
 		case "команды":
 			commandList()
+		case "исп", "п", "предмет":
+			if eCurrentData == nil {
+				fmt.Println("Недоступно в ограниченной версии")
+			} else {
+				commands.InventoryExtended(eCurrentData)
+				fmt.Print("Введите номер предмета: ")
+				var id int
+				fmt.Scan(&id)
+				fmt.Println()
+
+				commands.UseItem(id, eCurrentData.Inventory, eClient)
+			}
 		case "выход":
 			os.Exit(0)
 
@@ -200,6 +212,7 @@ func commandList() {
 	fmt.Println("Команды:")
 	fmt.Println("	'герой' 					- вывести информацию о герое")
 	fmt.Println("	'инвентарь' или 'инв' 		- вывести информацию об инвентаре героя")
+	fmt.Println("	'предмет', 'исп' или 'п' 	- активировать предмет в инвентаре")
 	fmt.Println("	'снаряжение' или 'снар' 	- вывести информацию о снаряжении героя (недоступно в огранич. версии)")
 	fmt.Println("	'бог' или 'я' 				- вывести информацию об себе (божестве)")
 	fmt.Println("	'квест' 					- вывести информацию о текущем задании")

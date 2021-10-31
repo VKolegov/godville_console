@@ -1,8 +1,12 @@
 package commands
 
 import (
+	"encoding/json"
 	"fmt"
+	"godville/enc"
 	"godville/structs"
+	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -79,7 +83,7 @@ func InventoryExtended(eData *structs.ExtendedData) {
 			fmt.Print("@ ")
 		}
 
-		fmt.Printf("%s (%d шт.)", itemName, item.Cnt)
+		fmt.Printf("[%d] %s (%d шт.)", item.Pos, itemName, item.Cnt)
 
 		if item.Type == "heal_potion" {
 			fmt.Print(" (лечебн.)")
@@ -92,8 +96,6 @@ func InventoryExtended(eData *structs.ExtendedData) {
 		if item.ActivateByUser {
 			fmt.Printf(" (цена: %d праны)", item.NeedsGodpower)
 		}
-
-
 
 		fmt.Print("\n")
 	}
@@ -117,4 +119,58 @@ func printEquipmentItem(item structs.EquipmentItem) {
 		fmt.Print("[Ж]")
 	}
 	fmt.Printf("[%s] %s %s\n", item.Capt, item.Name, item.Level)
+}
+
+func UseItem(id int, inventory map[string]structs.InventoryItem, c *http.Client) {
+	var (
+		r *http.Response
+
+		response structs.GenericResponse
+		itemName string
+		item     structs.InventoryItem
+
+		err error
+	)
+
+	for itemName, item = range inventory {
+		if item.Pos == id {
+			break
+		}
+	}
+
+	rData := map[string]string{
+		"id": itemName,
+	}
+
+	rDataEncoded, err := json.Marshal(rData)
+
+	if err != nil {
+		fmt.Printf("Error while encoding item request: %s\n", err)
+	}
+
+	a := enc.Vm("agQHqM4rCoT0CaDvq44I")
+	b := enc.Wm(rDataEncoded)
+
+	d := url.Values{
+		"a": {a}, // e.g. 9FwH2ahcM6oMrfS4DfuMyv1gcJksp
+		"b": {b}, // e.g. DvApzeyJpZCI6ItGB0LLQtdGC0Y/RidGD0Y7RgdGPINGC0YvQutCy0YMifQ==9is // светящуюся тыкву
+	}
+
+	fmt.Printf("req: %+v,\n", d)
+
+	r, _ = c.PostForm("https://godville.net/fbh/feed", d)
+
+	err = json.NewDecoder(r.Body).Decode(&response)
+
+	if err != nil {
+		fmt.Printf("Ошибка при попытке распознать результат исп предмета: %s", err.Error())
+		return
+	}
+
+	if response.Status != "success" {
+		fmt.Println("[не удалось донести запрос до сервера]")
+		fmt.Printf("%+v\n", response)
+	}
+
+	fmt.Printf("[Инвентарь] Предмет:%s активирован...\n", itemName)
 }

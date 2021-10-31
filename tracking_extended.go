@@ -73,6 +73,17 @@ func trackExtended(rate int) {
 		trackGodDataExtended()
 		trackHeroDataExtended()
 		trackFight()
+
+		if lastDiaryEntry != eCurrentData.Hero.DiaryLast {
+			lastDiaryEntry = eCurrentData.Hero.DiaryLast
+			fmt.Printf("[Дневник] %s\n", lastDiaryEntry)
+		}
+
+		if lastNewsFromTheField != eCurrentData.NewsFromField.Msg {
+			fmt.Println(eCurrentData.NewsFromField.Msg)
+			lastNewsFromTheField = eCurrentData.NewsFromField.Msg
+		}
+
 		processAutoInfluence()
 
 		if eCurrentData.Hero.TempleCompletedAt == "" {
@@ -159,16 +170,6 @@ func trackHeroDataExtended() {
 	var (
 		whereabouts string
 	)
-
-	if lastDiaryEntry != eCurrentData.Hero.DiaryLast {
-		lastDiaryEntry = eCurrentData.Hero.DiaryLast
-		fmt.Printf("[Дневник] %s\n", lastDiaryEntry)
-	}
-
-	if lastNewsFromTheField != eCurrentData.NewsFromField.Msg {
-		fmt.Println(eCurrentData.NewsFromField.Msg)
-		lastNewsFromTheField = eCurrentData.NewsFromField.Msg
-	}
 
 	if lastHealth != eCurrentData.Hero.Health ||
 		lastPillar != eCurrentData.Hero.Distance ||

@@ -68,11 +68,3 @@ func processAutoEvilInfluence() {
 	}
 
 }
-
-// TODO: activating item
-// eg: светящуюся тыкву. позиция: 9
-// a: 9FwH2ahcM6oMrfS4DfuMyv1gcJksp
-// b: DvApzeyJpZCI6ItGB0LLQtdGC0Y/RidGD0Y7RgdGPINGC0YvQutCy0YMifQ==9is
-// eg: оранжевую коробочку. позиция: 13
-// a: JqQb2ahcM6oMrfS4DfuMyv1gLFw3k
-// b: 2rikgeyJpZCI6ItC+0YDQsNC90LbQtdCy0YPRjiDQutC+0YDQvtCx0L7Rh9C60YMifQ==0XG

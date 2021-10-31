@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	lastDiaryEntry string
+	lastDiaryEntry       string
 	lastNewsFromTheField string
 
 	lastHealth uint16 = 0

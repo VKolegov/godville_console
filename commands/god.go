@@ -65,7 +65,7 @@ func MakeInfluence(infType string, eData *structs.ExtendedData, eClient *http.Cl
 	var (
 		r *http.Response
 
-		inf structs.Influence
+		inf     structs.Influence
 		infName string
 
 		err error
