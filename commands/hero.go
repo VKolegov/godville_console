@@ -156,8 +156,6 @@ func UseItem(id int, inventory map[string]structs.InventoryItem, c *http.Client)
 		"b": {b}, // e.g. DvApzeyJpZCI6ItGB0LLQtdGC0Y/RidGD0Y7RgdGPINGC0YvQutCy0YMifQ==9is // светящуюся тыкву
 	}
 
-	fmt.Printf("req: %+v,\n", d)
-
 	r, _ = c.PostForm("https://godville.net/fbh/feed", d)
 
 	err = json.NewDecoder(r.Body).Decode(&response)
@@ -172,5 +170,5 @@ func UseItem(id int, inventory map[string]structs.InventoryItem, c *http.Client)
 		fmt.Printf("%+v\n", response)
 	}
 
-	fmt.Printf("[Инвентарь] Предмет:%s активирован...\n", itemName)
+	fmt.Printf("[Инвентарь] %s Активировали %s!\n", itemName)
 }
