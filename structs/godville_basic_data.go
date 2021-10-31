@@ -34,3 +34,35 @@ type GodvilleData struct {
 	Aura              string   `json:"aura"`
 	Activatables      []string `json:"activatables"`
 }
+
+func (g GodvilleData) GetHealth() int {
+	return int(g.Health)
+}
+
+func (g GodvilleData) GetMaxHealth() int {
+	return int(g.MaxHealth)
+}
+
+func (g GodvilleData) GetInvNum() int {
+	return int(g.InventoryNum)
+}
+
+func (g GodvilleData) GetMaxInvNum() int {
+	return int(g.InventoryMaxNum)
+}
+
+func (g GodvilleData) GetPillar() int {
+	return int(g.Distance)
+}
+
+func (g GodvilleData) GetTown() string {
+	return g.TownName
+}
+
+func (g GodvilleData) GetGold() int {
+	return -1
+}
+
+func (g GodvilleData) GetGoldApprox() string {
+	return g.GoldApprox
+}

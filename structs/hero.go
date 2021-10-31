@@ -1,6 +1,6 @@
 package structs
 
-type Hero struct {
+type HeroObj struct {
 	Name                string        `json:"name"`                   // Имя героя
 	Godname             string        `json:"godname"`                // Имя бога
 	Gender              string        `json:"gender"`                 // Пол
@@ -78,4 +78,36 @@ type Hero struct {
 	InvitesLeft         int           `json:"invites_left"`           // Осталось инвайтов
 	Ggender             string        `json:"ggender"`                // Пол (бога?)
 	ArenaGodCmdDisabled bool          `json:"arena_god_cmd_disabled"` // Пульт отключен в режиме арены
+}
+
+func (h HeroObj) GetHealth() int {
+	return int(h.Health)
+}
+
+func (h HeroObj) GetMaxHealth() int {
+	return int(h.MaxHealth)
+}
+
+func (h HeroObj) GetInvNum() int {
+	return int(h.InventoryNum)
+}
+
+func (h HeroObj) GetMaxInvNum() int {
+	return int(h.InventoryMaxNum)
+}
+
+func (h HeroObj) GetPillar() int {
+	return int(h.Distance)
+}
+
+func (h HeroObj) GetTown() string {
+	return h.TownName
+}
+
+func (h HeroObj) GetGold() int {
+	return h.Gold
+}
+
+func (h HeroObj) GetGoldApprox() string {
+	return h.GoldApprox
 }

@@ -9,7 +9,7 @@ func QuestStatus(data structs.GodvilleData) {
 	fmt.Printf("Текущий квест: \"%s\"; прогресс: %d%%\n", data.Quest, data.QuestProgress)
 }
 
-func QuestStatusExtended(hero structs.Hero) {
+func QuestStatusExtended(hero structs.HeroObj) {
 	fmt.Printf(
 		"Текущий квест: \"%s\"; прогресс: %d%%; Выполнено квестов: %d\n",
 		hero.Quest,

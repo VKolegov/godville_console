@@ -15,8 +15,10 @@ var (
 	lastNewsFromTheField string
 
 	lastHealth uint16 = 0
-	lastPrana  uint8  = 0
-	lastGold   string
+	lastPrana   uint8  = 0
+	lastGoldStr string
+	lastGold   int
+	lastInvNum uint16
 	lastPillar uint16 = 0
 	lastTown   string
 
@@ -108,9 +110,6 @@ func trackGodData() {
 }
 
 func trackHeroData() {
-	var (
-		whereabouts string
-	)
 
 	if lastDiaryEntry != currentData.DiaryLast {
 		lastDiaryEntry = currentData.DiaryLast
@@ -120,27 +119,15 @@ func trackHeroData() {
 	if lastHealth != currentData.Health ||
 		lastPillar != currentData.Distance ||
 		lastTown != currentData.TownName ||
-		lastGold != currentData.GoldApprox {
+		lastGoldStr != currentData.GoldApprox {
 
-		if currentData.TownName == "" {
-			whereabouts = fmt.Sprintf("Столб #%d", currentData.Distance)
-		} else {
-			whereabouts = fmt.Sprintf("%s (ст. %d)", currentData.TownName, currentData.Distance)
-		}
-
-		fmt.Printf(
-			"[%s][%s] Здоровье: %d/%d; Золота: %s\n",
-			currentData.Name,
-			whereabouts,
-			currentData.Health,
-			currentData.MaxHealth,
-			currentData.GoldApprox,
-		)
+		printHeroStatus(currentData)
 
 		lastHealth = currentData.Health
 		lastTown = currentData.TownName
 		lastPillar = currentData.Distance
-		lastGold = currentData.GoldApprox
+		lastGoldStr = currentData.GoldApprox
+		lastInvNum = currentData.InventoryNum
 	}
 }
 

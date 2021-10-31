@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -180,36 +182,82 @@ func trackGodDataExtended() {
 
 func trackHeroDataExtended() {
 	var (
-		hero        structs.Hero = eCurrentData.Hero
-		whereabouts string
+		hero structs.HeroObj = eCurrentData.Hero
 	)
 
 	if lastHealth != hero.Health ||
 		lastPillar != hero.Distance ||
 		lastTown != hero.TownName ||
-		lastGold != hero.GoldWe {
+		lastGoldStr != hero.GoldWe ||
+		lastInvNum != hero.InventoryNum {
 
-		if hero.TownName == "" {
-			whereabouts = fmt.Sprintf("Столб #%d", hero.Distance)
-		} else {
-			whereabouts = fmt.Sprintf("%s (ст. %d)", hero.TownName, hero.Distance)
-		}
-
-		fmt.Printf(
-			"[%s] Здоровье: %d/%d; Золота: %s; Инвентарь: %d/%d\n",
-			whereabouts,
-			hero.Health,
-			hero.MaxHealth,
-			hero.GoldWe,
-			hero.InventoryNum,
-			hero.InventoryMaxNum,
-		)
+		printHeroStatus(hero)
 
 		lastHealth = hero.Health
 		lastTown = hero.TownName
 		lastPillar = hero.Distance
-		lastGold = hero.GoldWe
+		lastGoldStr = hero.GoldWe
+		lastGold = hero.Gold
+		lastInvNum = hero.InventoryNum
 	}
+}
+
+func printHeroStatus(h structs.Hero) {
+
+	var sb strings.Builder
+
+	sb.Grow(120) // 100 chars
+
+	sb.WriteByte('[')
+
+	pillarStr := strconv.Itoa(h.GetPillar())
+
+	town := h.GetTown()
+	if town == "" {
+		sb.WriteString("Столб #")
+		sb.WriteString(pillarStr)
+	} else {
+		sb.WriteString(town)
+		sb.WriteString(" (ст. ")
+		sb.WriteString(pillarStr)
+		sb.WriteByte(')')
+	}
+
+
+	sb.WriteByte(']')
+
+	// health
+	health := h.GetHealth()
+	sb.WriteString(" Здоровье: ")
+	sb.WriteString(strconv.Itoa(health))
+	sb.WriteByte('/')
+	sb.WriteString(strconv.Itoa(h.GetMaxHealth()))
+
+	appendDiff(health, int(lastHealth), &sb)
+	sb.WriteByte(';')
+
+	// gold
+	sb.WriteString(" Золота: ")
+	sb.WriteString(h.GetGoldApprox())
+
+	if h.GetGold() >= 0 {
+		appendDiff(h.GetGold(), lastGold, &sb)
+	}
+	sb.WriteByte(';')
+
+	// inventory
+	invNum := h.GetInvNum()
+	sb.WriteString(" Инвентарь: ")
+	sb.WriteString(strconv.Itoa(invNum))
+	sb.WriteByte('/')
+	sb.WriteString(strconv.Itoa(h.GetMaxInvNum()))
+
+	appendDiff(h.GetInvNum(), int(lastInvNum), &sb)
+	sb.WriteByte(';')
+
+	sb.WriteByte('\n')
+
+	fmt.Print(sb.String())
 }
 
 func trackFight() {
@@ -298,5 +346,25 @@ func trackSavingsExtended() {
 			diff,
 			savings,
 		)
+	}
+}
+
+func appendDiff(curr, last int, sb *strings.Builder) {
+
+	diff := curr - last
+
+	if diff != 0 {
+
+		diffStr := strconv.Itoa(diff)
+		sb.WriteString(" (")
+
+		if diff < 0 {
+			sb.WriteString(diffStr)
+		} else {
+			sb.WriteByte('+')
+			sb.WriteString(diffStr)
+		}
+
+		sb.WriteByte(')')
 	}
 }

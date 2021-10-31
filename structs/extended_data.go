@@ -3,9 +3,9 @@ package structs
 import "time"
 
 type ExtendedData struct {
-	Status    string                   `json:"status"`
-	Hero      Hero                     `json:"hero"`
-	Skills    []Skill                  `json:"skills"`
+	Status string  `json:"status"`
+	Hero   HeroObj `json:"hero"`
+	Skills []Skill `json:"skills"`
 	Inventory map[string]InventoryItem `json:"inventory"`
 	Equipment Equipment                `json:"equipment"`
 	Ctime     time.Time                `json:"ctime"`
