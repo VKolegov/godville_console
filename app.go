@@ -142,11 +142,11 @@ func processCommands() {
 		command = strings.ToLower(command)
 
 		switch command {
-		case "квест":
+		case "герой":
 			if eCurrentData == nil {
-				commands.QuestStatus(currentData)
+				commands.Hero(currentData)
 			} else {
-				commands.QuestStatusExtended(eCurrentData.Hero)
+				commands.HeroExtended(eCurrentData)
 			}
 		case "инв", "инвентарь":
 			if eCurrentData == nil {
@@ -154,11 +154,17 @@ func processCommands() {
 			} else {
 				commands.InventoryExtended(eCurrentData)
 			}
-		case "герой":
+		case "снар", "снаряжение":
 			if eCurrentData == nil {
-				commands.Hero(currentData)
+				fmt.Println("Недоступно в ограниченной версии")
 			} else {
-				commands.HeroExtended(eCurrentData)
+				commands.Equipment(eCurrentData)
+			}
+		case "квест":
+			if eCurrentData == nil {
+				commands.QuestStatus(currentData)
+			} else {
+				commands.QuestStatusExtended(eCurrentData.Hero)
 			}
 		case "зло":
 			if eCurrentData == nil {
@@ -186,12 +192,13 @@ func processCommands() {
 func commandList() {
 	fmt.Println()
 	fmt.Println("Команды:")
-	fmt.Println("	'герой' 				- вывести информацию о герое")
-	fmt.Println("	'инвентарь' или 'инв' 	- вывести информацию об инвентаре героя")
-	fmt.Println("	'бог' или 'я' 			- вывести информацию об себе (божестве)")
-	fmt.Println("	'квест' 				- вывести информацию о текущем задании")
-	fmt.Println("	'зло' 					- сделать зло (недоступно в огранич. версии)")
-	fmt.Println("	'команды' 				- вывести список команд")
-	fmt.Println("	'выход' 				- закрыть программу")
+	fmt.Println("	'герой' 					- вывести информацию о герое")
+	fmt.Println("	'инвентарь' или 'инв' 		- вывести информацию об инвентаре героя")
+	fmt.Println("	'снаряжение' или 'снар' 	- вывести информацию о снаряжении героя")
+	fmt.Println("	'бог' или 'я' 				- вывести информацию об себе (божестве)")
+	fmt.Println("	'квест' 					- вывести информацию о текущем задании")
+	fmt.Println("	'зло' 						- сделать зло (недоступно в огранич. версии)")
+	fmt.Println("	'команды' 					- вывести список команд")
+	fmt.Println("	'выход' 					- закрыть программу")
 	fmt.Println()
 }

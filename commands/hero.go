@@ -98,3 +98,23 @@ func InventoryExtended(eData *structs.ExtendedData) {
 		fmt.Print("\n")
 	}
 }
+
+func Equipment(eData *structs.ExtendedData) {
+	fmt.Println("Снаряжение героя:")
+
+	printEquipmentItem(eData.Equipment.Head)
+	printEquipmentItem(eData.Equipment.Talisman)
+	printEquipmentItem(eData.Equipment.Body)
+	printEquipmentItem(eData.Equipment.Arms)
+	printEquipmentItem(eData.Equipment.Weapon)
+	printEquipmentItem(eData.Equipment.Shield)
+	printEquipmentItem(eData.Equipment.Legs)
+}
+
+func printEquipmentItem(item structs.EquipmentItem) {
+	fmt.Printf("	- ")
+	if item.B == 1 {
+		fmt.Print("[Ж]")
+	}
+	fmt.Printf("[%s] %s %s\n", item.Capt, item.Name, item.Level)
+}
