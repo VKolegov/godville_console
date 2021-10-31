@@ -74,16 +74,16 @@ func InventoryExtended(eData *structs.ExtendedData) {
 	fmt.Println("На себе герой несёт:")
 	for itemName, item := range eData.Inventory {
 
-		fmt.Print("   - ")
+		fmt.Printf("   - [%d] ", item.Pos)
 
 		if item.ActivateByUser {
 			fmt.Print("@ ")
 		}
 
-		fmt.Printf("[%d] %s (%d шт.)", item.Pos, itemName, item.Cnt)
+		fmt.Printf("%s (%d шт.)", itemName, item.Cnt)
 
 		if item.Type == "heal_potion" {
-			fmt.Print(" (лечебн.)")
+			fmt.Print(" (леч.)")
 		}
 
 		if item.Description != "" {
