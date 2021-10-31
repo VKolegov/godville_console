@@ -43,19 +43,30 @@ func trackExtended(rate int) {
 		initialRequest = true
 		data           structs.ExtendedData
 
+		// this value is fixed, apparently
+		// it's taken from https://godville.net/superhero
+		// html element "#axe" which contains base64 text
+		// decoded it looks like this
+		// {"zpg":false,"d":"godville.net","p":"","td":"","u1":"wss://s2.godville.net:443/wshero","u2":"/fbh/feed?a=GjZLI9oQGPkBZMqMMMP3KYBRVcqmu"}
+		// "u1" is web socket url
+		// so, "u2" field is basically poll url
+		pollUrl string = "https://godville.net/fbh/feed?a=GjZLI9oQGPkBZMqMMMP3KYBRVcqmu"
+		pollQueryUrl string
+		cnt uint = 0
+
 		err error
 	)
 
 	for {
 
-		d := url.Values{
-			"a": {"GjZLI9oQGPkBZMqMMMP3KYBRVcqmu"},
-		}
+		pollQueryUrl = fmt.Sprintf(
+			"%s&cnt=%d", pollUrl, cnt,
+		)
 
-		r, _ = eClient.PostForm("https://godville.net/fbh/feed", d)
+		r, _ = eClient.Get(pollQueryUrl)
 
-		// clearing up
-		data.Inventory = make(map[string]structs.InventoryItem)
+		// cleaning up
+		data = structs.ExtendedData{}
 
 		err = json.NewDecoder(r.Body).Decode(&data)
 
@@ -98,6 +109,7 @@ func trackExtended(rate int) {
 			trackSavingsExtended()
 		}
 
+		cnt++
 		time.Sleep(time.Second * time.Duration(rate))
 	}
 }
