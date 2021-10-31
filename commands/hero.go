@@ -118,7 +118,7 @@ func printEquipmentItem(item structs.EquipmentItem) {
 	fmt.Printf("[%s] %s %s\n", item.Capt, item.Name, item.Level)
 }
 
-func UseItem(id int, inventory map[string]structs.InventoryItem, c *http.Client) {
+func UseItem(id int, d *structs.ExtendedData, c *http.Client) {
 	var (
 		itemName string
 		item     structs.InventoryItem
@@ -126,7 +126,7 @@ func UseItem(id int, inventory map[string]structs.InventoryItem, c *http.Client)
 		err error
 	)
 
-	for itemName, item = range inventory {
+	for itemName, item = range d.Inventory {
 		if item.Pos == id {
 			break
 		}
@@ -134,6 +134,16 @@ func UseItem(id int, inventory map[string]structs.InventoryItem, c *http.Client)
 
 	if item.ActivateByUser == false {
 		fmt.Printf("[Инвентарь] %s нельзя активировать\n", itemName)
+		return
+	}
+
+	if d.Hero.Godpower < item.NeedsGodpower {
+		fmt.Printf(
+			"[Инвентарь] Не хватает силёнок чтобы активировать %s (%d/%d)\n",
+			itemName,
+			d.Hero.Godpower,
+			item.NeedsGodpower,
+		)
 		return
 	}
 

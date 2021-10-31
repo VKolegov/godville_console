@@ -164,7 +164,7 @@ func processCommands() {
 				fmt.Scan(&id)
 				fmt.Println()
 
-				commands.UseItem(id, eCurrentData.Inventory, eClient)
+				commands.UseItem(id, eCurrentData, eClient)
 			}
 		case "снар", "снаряжение":
 			if eCurrentData == nil {
