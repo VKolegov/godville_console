@@ -154,6 +154,18 @@ func processCommands() {
 			} else {
 				commands.InventoryExtended(eCurrentData)
 			}
+		case "исп", "п", "предмет":
+			if eCurrentData == nil {
+				fmt.Println("Недоступно в ограниченной версии")
+			} else {
+				commands.InventoryExtended(eCurrentData)
+				fmt.Print("Введите номер предмета: ")
+				var id int
+				fmt.Scan(&id)
+				fmt.Println()
+
+				commands.UseItem(id, eCurrentData.Inventory, eClient)
+			}
 		case "снар", "снаряжение":
 			if eCurrentData == nil {
 				fmt.Println("Недоступно в ограниченной версии")
@@ -178,6 +190,12 @@ func processCommands() {
 			} else {
 				commands.MakeInfluence("encourage", eCurrentData, eClient)
 			}
+		case "оживить", "воскресить", "воскр":
+			if eCurrentData == nil {
+				fmt.Println("Недоступно в ограниченной версии")
+			} else {
+				commands.ResurrectHero(eClient)
+			}
 		case "бог", "я":
 			if eCurrentData == nil {
 				commands.GodInfo(currentData)
@@ -186,18 +204,6 @@ func processCommands() {
 			}
 		case "команды":
 			commandList()
-		case "исп", "п", "предмет":
-			if eCurrentData == nil {
-				fmt.Println("Недоступно в ограниченной версии")
-			} else {
-				commands.InventoryExtended(eCurrentData)
-				fmt.Print("Введите номер предмета: ")
-				var id int
-				fmt.Scan(&id)
-				fmt.Println()
-
-				commands.UseItem(id, eCurrentData.Inventory, eClient)
-			}
 		case "выход":
 			os.Exit(0)
 
@@ -210,15 +216,16 @@ func processCommands() {
 func commandList() {
 	fmt.Println()
 	fmt.Println("Команды:")
-	fmt.Println("	'герой' 					- вывести информацию о герое")
-	fmt.Println("	'инвентарь' или 'инв' 		- вывести информацию об инвентаре героя")
-	fmt.Println("	'предмет', 'исп' или 'п' 	- активировать предмет в инвентаре")
-	fmt.Println("	'снаряжение' или 'снар' 	- вывести информацию о снаряжении героя (недоступно в огранич. версии)")
-	fmt.Println("	'бог' или 'я' 				- вывести информацию об себе (божестве)")
-	fmt.Println("	'квест' 					- вывести информацию о текущем задании")
-	fmt.Println("	'добро' 					- сделать добро (недоступно в огранич. версии)")
-	fmt.Println("	'зло' 						- сделать зло (недоступно в огранич. версии)")
-	fmt.Println("	'команды' 					- вывести список команд")
-	fmt.Println("	'выход' 					- закрыть программу")
+	fmt.Println("	'герой' 							- вывести информацию о герое")
+	fmt.Println("	'инвентарь' или 'инв' 				- вывести информацию об инвентаре героя")
+	fmt.Println("	'предмет', 'исп' или 'п' 			- активировать предмет в инвентаре")
+	fmt.Println("	'снаряжение' или 'снар' 			- вывести информацию о снаряжении героя (недоступно в огранич. версии)")
+	fmt.Println("	'бог' или 'я' 						- вывести информацию об себе (божестве)")
+	fmt.Println("	'квест' 							- вывести информацию о текущем задании")
+	fmt.Println("	'добро' 							- сделать добро (недоступно в огранич. версии)")
+	fmt.Println("	'зло' 								- сделать зло (недоступно в огранич. версии)")
+	fmt.Println("	'оживить', 'воскресить', 'воскр'	- воскресить героя (недоступно в огранич. версии)")
+	fmt.Println("	'команды' 							- вывести список команд")
+	fmt.Println("	'выход' 							- закрыть программу")
 	fmt.Println()
 }

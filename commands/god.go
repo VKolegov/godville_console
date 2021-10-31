@@ -122,3 +122,51 @@ func MakeInfluence(infType string, eData *structs.ExtendedData, eClient *http.Cl
 
 	fmt.Printf("[влияние:%s] %s\n", infName, inf.DisplayString)
 }
+
+func ResurrectHero(c *http.Client) {
+	var (
+		r *http.Response
+
+		response structs.GenericResponse
+
+		err error
+	)
+
+	rData := map[string]interface{}{
+		"action": "resurrect",
+	}
+
+	rDataEncoded, err := json.Marshal(rData)
+
+	if err != nil {
+		fmt.Printf("Error while encoding resurrection request: %s\n", err)
+		return
+	}
+
+	a := enc.Vm("5JgMUahE1BYdtf7quoWz")
+	b := enc.Wm(rDataEncoded)
+
+	d := url.Values{
+		"a": {a}, // e.g. 9FwH2ahcM6oMrfS4DfuMyv1gcJksp
+		"b": {b},
+	}
+
+	r, _ = c.PostForm("https://godville.net/fbh/feed", d)
+
+	err = json.NewDecoder(r.Body).Decode(&response)
+
+	if err != nil {
+		fmt.Printf("Ошибка при попытке оживить героя: %s", err.Error())
+		return
+	}
+
+	if response.Status != "success" {
+		fmt.Println("[не удалось донести запрос до сервера]")
+		fmt.Printf("%+v\n", response)
+	}
+
+	fmt.Printf("Герой оживлён!\n")
+	if response.Msg != "" {
+		fmt.Println(response.Msg)
+	}
+}
