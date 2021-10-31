@@ -66,3 +66,35 @@ func (g GodvilleData) GetGold() int {
 func (g GodvilleData) GetGoldApprox() string {
 	return g.GoldApprox
 }
+
+func (g GodvilleData) GetGodName() string {
+	return g.Godname
+}
+
+func (g GodvilleData) GetGodPower() int {
+	return int(g.Godpower)
+}
+
+func (g GodvilleData) GetGodPowerCharges() int {
+	return -1
+}
+
+func (g GodvilleData) GetSavings() string {
+	return g.Savings
+}
+
+func (g GodvilleData) GetBricks() int {
+	return g.BricksCnt
+}
+
+func (g GodvilleData) GetWood() int {
+	return int(g.WoodCnt)
+}
+
+func (g GodvilleData) GetClan() string {
+	return g.Clan
+}
+
+func (g GodvilleData) GetClanPosition() string {
+	return g.ClanPosition
+}

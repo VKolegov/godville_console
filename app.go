@@ -198,9 +198,9 @@ func processCommands() {
 			}
 		case "бог", "я":
 			if eCurrentData == nil {
-				commands.GodInfo(currentData)
+				commands.PrintGodInfo(currentData, true)
 			} else {
-				commands.GodInfoExtended(eCurrentData, true)
+				commands.PrintGodInfo(eCurrentData.Hero, true)
 			}
 		case "команды":
 			commandList()

@@ -109,5 +109,37 @@ func (h HeroObj) GetGold() int {
 }
 
 func (h HeroObj) GetGoldApprox() string {
-	return h.GoldApprox
+	return h.GoldWe
+}
+
+func (h HeroObj) GetGodName() string {
+	return h.Godname
+}
+
+func (h HeroObj) GetGodPower() int {
+	return int(h.Godpower)
+}
+
+func (h HeroObj) GetGodPowerCharges() int {
+	return int(h.Accumulator)
+}
+
+func (h HeroObj) GetSavings() string {
+	return h.Retirement
+}
+
+func (h HeroObj) GetBricks() int {
+	return h.BricksCnt
+}
+
+func (h HeroObj) GetWood() int {
+	return h.WoodCnt
+}
+
+func (h HeroObj) GetClan() string {
+	return h.Clan
+}
+
+func (h HeroObj) GetClanPosition() string {
+	return h.ClanPosition
 }

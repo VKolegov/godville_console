@@ -5,58 +5,60 @@ import (
 	"fmt"
 	"godville/structs"
 	"net/http"
+	"strconv"
+	"strings"
 )
 
-func GodInfo(data structs.GodvilleData) {
+func PrintGodInfo(g structs.Hero, clanInfo bool) {
 
-	fmt.Printf("[%s] Прана: %d%%", data.Godname, data.Godpower)
+	sb := strings.Builder{}
+	sb.Grow(120)
 
-	if data.Savings != "" {
-		fmt.Printf("; Сбережений: %s", data.Savings)
+	sb.WriteByte('[')
+	sb.WriteString(g.GetGodName())
+	sb.WriteString("] ")
+
+	sb.WriteString("Прана: ")
+	sb.WriteString(strconv.Itoa(g.GetGodPower()))
+	sb.WriteByte('%')
+
+	if g.GetGodPowerCharges() >= 0 {
+		sb.WriteString(" (зарядов: ")
+		sb.WriteString(strconv.Itoa(g.GetGodPowerCharges()))
+		sb.WriteByte(')')
 	}
 
-	if data.BricksCnt < 1000 {
-		fmt.Printf("; Золотых кирпичей: %d/1000", data.BricksCnt)
+	if g.GetBricks() < 1000 {
+		sb.WriteString("; Золотых кирпичей: ")
+		sb.WriteString(strconv.Itoa(g.GetBricks()))
 	}
 
-	if data.WoodCnt < 1000 {
-		fmt.Printf("; Дерева: %d/1000", data.WoodCnt)
+	if g.GetWood() < 1000 {
+		sb.WriteString("; Дерева для ковчега: ")
+		sb.WriteString(strconv.Itoa(g.GetWood()))
 	}
 
-	fmt.Print("\n")
-}
-
-func GodInfoExtended(eData *structs.ExtendedData, clanInfo bool) {
-
-	fmt.Printf(
-		"[%s] Прана: %d%% (зарядов: %.0f)",
-		eData.Hero.Godname,
-		eData.Hero.Godpower,
-		eData.Hero.Accumulator,
-	)
-
-	if eData.Hero.Retirement != "" {
-		fmt.Printf("; Сбережений: %s", eData.Hero.Retirement)
+	if g.GetSavings() != "" {
+		sb.WriteString("; Сбережений: ")
+		sb.WriteString(g.GetSavings())
 	}
 
-	if eData.Hero.BricksCnt < 1000 {
-		fmt.Printf("; Золотых кирпичей: %d/1000", eData.Hero.BricksCnt)
-	}
-
-	if eData.Hero.WoodCnt < 1000 {
-		fmt.Printf("; Дерева: %d/1000", eData.Hero.WoodCnt)
-	}
-
-	fmt.Print("\n")
+	sb.WriteByte('\n')
 
 	if clanInfo {
-		fmt.Printf(
-			"[%s] Клан: %s; Должность: %s\n",
-			eData.Hero.Godname,
-			eData.Hero.Clan,
-			eData.Hero.ClanPosition,
-		)
+
+		sb.WriteByte('[')
+		sb.WriteString(g.GetGodName())
+		sb.WriteByte(']')
+
+		sb.WriteString(" Клан: ")
+		sb.WriteString(g.GetClan())
+		sb.WriteString("; Должность: ")
+		sb.WriteString(g.GetClanPosition())
+		sb.WriteByte('\n')
 	}
+
+	fmt.Print(sb.String())
 }
 
 func MakeInfluence(influenceType string, eData *structs.ExtendedData, eClient *http.Client) {

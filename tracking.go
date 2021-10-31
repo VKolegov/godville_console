@@ -102,7 +102,7 @@ func trackGodData() {
 		(lastWoodCnt >= 0 && lastWoodCnt != int32(currentData.WoodCnt)) ||
 		lastSavingsString != currentData.Savings {
 
-		commands.GodInfo(currentData)
+		commands.PrintGodInfo(currentData, false)
 
 		lastPrana = currentData.Godpower
 		lastSavingsString = currentData.Savings

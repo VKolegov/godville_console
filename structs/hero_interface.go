@@ -9,4 +9,13 @@ type Hero interface {
 	GetTown() string
 	GetGold() int
 	GetGoldApprox() string
+
+	GetGodName() string
+	GetGodPower() int
+	GetGodPowerCharges() int
+	GetSavings() string
+	GetBricks() int
+	GetWood() int
+	GetClan() string
+	GetClanPosition() string
 }
