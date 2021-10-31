@@ -170,13 +170,13 @@ func processCommands() {
 			if eCurrentData == nil {
 				fmt.Println("Недоступно в ограниченной версии")
 			} else {
-				commands.MakeEvil(eClient)
+				commands.MakeInfluence("punish", eCurrentData, eClient)
 			}
 		case "добро":
 			if eCurrentData == nil {
 				fmt.Println("Недоступно в ограниченной версии")
 			} else {
-				commands.MakeGood(eClient)
+				commands.MakeInfluence("encourage", eCurrentData, eClient)
 			}
 		case "бог", "я":
 			if eCurrentData == nil {

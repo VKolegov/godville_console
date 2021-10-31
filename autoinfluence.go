@@ -52,7 +52,7 @@ func processAutoEvilInfluence() {
 
 		if eCurrentData.Hero.Godpower >= uint8(autoEvilInfluenceThreshold) {
 			fmt.Println("[auto] Делаем автоматическое зло...")
-			commands.MakeEvil(eClient)
+			commands.MakeInfluence("punish", eCurrentData, eClient)
 			return
 		}
 	}
@@ -63,7 +63,7 @@ func processAutoEvilInfluence() {
 		eCurrentData.Hero.MonsterProgress <= uint16(monsterProgressThreshold) {
 
 		fmt.Println("[auto] Делаем автоматическое зло в бою...")
-		commands.MakeEvil(eClient)
+		commands.MakeInfluence("punish", eCurrentData, eClient)
 
 	}
 
