@@ -214,7 +214,9 @@ func trackHeroDataExtended() {
 		lastPillar != hero.Distance ||
 		lastTown != hero.TownName ||
 		lastGoldStr != hero.GoldWe ||
-		lastInvNum != hero.InventoryNum {
+		lastInvNum != hero.InventoryNum ||
+		prevHeroData.GetMonster() != hero.GetMonster() ||
+		prevHeroData.GetMonsterProgress() != hero.GetMonsterProgress() {
 
 		displaying.PrintHeroStatus(hero, prevHeroData, datetimeLayout)
 

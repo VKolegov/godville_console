@@ -25,7 +25,6 @@ var (
 	lastWoodCnt  int32 = -1
 
 	lastSavingsString string
-
 )
 
 func trackBasic(url string, rate int) {
@@ -115,7 +114,9 @@ func trackHeroData() {
 	if lastHealth != currentData.Health ||
 		lastPillar != currentData.Distance ||
 		lastTown != currentData.TownName ||
-		lastGoldStr != currentData.GoldApprox {
+		lastGoldStr != currentData.GoldApprox ||
+		prevHeroData.GetMonster() != currentData.GetMonster() ||
+		prevHeroData.GetMonsterProgress() != currentData.GetMonsterProgress() {
 
 		displaying.PrintHeroStatus(currentData, prevHeroData, datetimeLayout)
 

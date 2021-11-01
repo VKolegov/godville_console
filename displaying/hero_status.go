@@ -42,6 +42,13 @@ func PrintHeroStatus(h structs.Hero, p structs.Hero, datetimeLayout string) {
 	// health
 	health := h.GetHealth()
 	sb.WriteString("Здоровье: ")
+
+	if health < 25 {
+		HealthColor.Add(color.BlinkSlow)
+	} else {
+		resetColors()
+	}
+
 	sb.WriteString(HealthColor.Sprint(" "))
 	sb.WriteString(HealthColor.Sprint(strconv.Itoa(health)))
 	sb.WriteString(HealthColor.Sprint("/"))
