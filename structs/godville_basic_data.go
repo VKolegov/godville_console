@@ -122,3 +122,7 @@ func (g GodvilleData) GetMonster() string {
 func (g GodvilleData) GetMonsterProgress() int {
 	return 0
 }
+
+func (g GodvilleData) IsMonsterTough() bool {
+	return false
+}

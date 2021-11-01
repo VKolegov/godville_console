@@ -23,4 +23,5 @@ type Hero interface {
 
 	GetMonster() string
 	GetMonsterProgress() int
+	IsMonsterTough() bool
 }

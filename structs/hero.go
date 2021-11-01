@@ -62,6 +62,7 @@ type HeroObj struct {
 	MIdN                string        `json:"m_id_n"`                 // TODO: ?
 	MonsterName         string        `json:"monster_name"`           // Имя монстра
 	MonsterProgress     uint16        `json:"monster_progress"`       // Прогресс битвы с монстром
+	MonsterTough        string        `json:"monster_s"`              // Сложный ли монстр
 	SProgress           float64       `json:"s_progress"`             // TODO: ?
 	ArenaSendAfter      int           `json:"arena_send_after"`       // TODO: ?
 	DSendAfter          int           `json:"d_send_after"`           // TODO: ?
@@ -166,4 +167,12 @@ func (h HeroObj) GetMonster() string {
 
 func (h HeroObj) GetMonsterProgress() int {
 	return int(h.MonsterProgress)
+}
+
+func (h HeroObj) IsMonsterTough() bool {
+	if h.GetMonster() == "" {
+		return false
+	}
+
+	return h.MonsterTough == "1"
 }

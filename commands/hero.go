@@ -147,9 +147,13 @@ func Equipment(eData *structs.ExtendedData) {
 func printEquipmentItem(item structs.EquipmentItem) {
 	fmt.Printf("	- ")
 	if item.B == 1 {
+		color.Set(color.Bold)
 		fmt.Print("[Ж]")
 	}
-	fmt.Printf("[%s] %s %s\n", item.Capt, item.Name, item.Level)
+	fmt.Printf("[%s] %s %s", item.Capt, item.Name, item.Level)
+	color.Unset()
+
+	fmt.Print("\n")
 }
 
 func UseItem(id int, d *structs.ExtendedData, c *http.Client) {

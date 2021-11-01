@@ -2,6 +2,7 @@ package displaying
 
 import (
 	"fmt"
+	"github.com/fatih/color"
 	"godville/structs"
 	"strconv"
 	"strings"
@@ -38,24 +39,6 @@ func PrintHeroStatus(h structs.Hero, p structs.Hero, datetimeLayout string) {
 
 	sb.WriteString("] ")
 
-	// fight
-
-	// Идёт сражение
-	if h.GetMonster() != "" {
-
-		sb.WriteString(" Сражение с: ")
-		sb.WriteString(h.GetMonster())
-		sb.WriteString(" (")
-		sb.WriteString(strconv.Itoa(h.GetMonsterProgress()))
-		sb.WriteString("/100)")
-
-		if p != nil && p.GetMonster() == h.GetMonster() {
-			appendDiff(h.GetMonsterProgress(), p.GetMonsterProgress(), &sb)
-		}
-
-		sb.WriteString(" | ")
-	}
-
 	// health
 	health := h.GetHealth()
 	sb.WriteString("Здоровье: ")
@@ -70,6 +53,31 @@ func PrintHeroStatus(h structs.Hero, p structs.Hero, datetimeLayout string) {
 	}
 
 	sb.WriteString(" | ")
+
+	// fight
+	if h.GetMonster() != "" {
+
+		sb.WriteString("Противник: ")
+
+		var monsterColor *color.Color
+
+		if h.IsMonsterTough() {
+			monsterColor = ToughMonsterColor
+		} else {
+			monsterColor = RegularMonsterColor
+		}
+
+		sb.WriteString(monsterColor.Sprint(h.GetMonster()))
+		sb.WriteString(monsterColor.Sprint(" ("))
+		sb.WriteString(monsterColor.Sprint(strconv.Itoa(h.GetMonsterProgress())))
+		sb.WriteString(monsterColor.Sprint("/100)"))
+
+		if p != nil && p.GetMonster() == h.GetMonster() {
+			appendDiff(h.GetMonsterProgress(), p.GetMonsterProgress(), &sb)
+		}
+
+		sb.WriteString(" | ")
+	}
 
 	// gold
 	sb.WriteString("Золота: ")
