@@ -53,10 +53,11 @@ func PrintHeroStatus(h structs.Hero, p structs.Hero, datetimeLayout string) {
 			appendDiff(h.GetMonsterProgress(), p.GetMonsterProgress(), &sb)
 		}
 	}
+	sb.WriteByte(';')
 
 	// health
 	health := h.GetHealth()
-	sb.WriteString(" Здоровье: ")
+	sb.WriteString(" Здоровье героя: ")
 	sb.WriteString(strconv.Itoa(health))
 	sb.WriteByte('/')
 	sb.WriteString(strconv.Itoa(h.GetMaxHealth()))

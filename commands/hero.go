@@ -80,8 +80,13 @@ func InventoryExtended(eData *structs.ExtendedData) {
 			fmt.Print("@ ")
 		}
 
-		fmt.Printf("%s (%d шт.)", itemName, item.Cnt)
+		if item.Cnt > 1 {
+			fmt.Printf("%s (%d шт.)", itemName, item.Cnt)
+		}
 
+		if item.Price >= 100 {
+			fmt.Print(" (цен.)")
+		}
 		if item.Type == "heal_potion" {
 			fmt.Print(" (леч.)")
 		}
