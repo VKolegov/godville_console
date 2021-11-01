@@ -1,6 +1,6 @@
 # Консольный клиент Godville
 
-<img width="884" alt="image" src="https://user-images.githubusercontent.com/6131352/139556183-8c2281d6-70c2-47e1-873f-75f8e72cf67f.png">
+<img width="1058" alt="Снимок экрана 2021-11-01 в 7 58 28" src="https://user-images.githubusercontent.com/6131352/139607982-3885aaed-d681-407a-9eda-a98db7acd431.png">
 
 
 ### Настройка
@@ -13,3 +13,4 @@
    100)
 6. `MONSTER_PROGRESS_THRESHOLD` - Не делать плохо в бою автоматически, если прогресс битвы превысил указанное значение (
    от 0 до 100)
+7. `DATETIME_FORMAT` - Формат даты/времени при выводе статуса бога и героя (см https://demin.ws/blog/russian/2012/04/27/date-and-time-formatting-in-go/)
