@@ -1,5 +1,7 @@
 package structs
 
+import "godville/utils"
+
 type GodvilleData struct {
 	Name              string   `json:"name"`
 	Godname           string   `json:"godname"`
@@ -81,6 +83,16 @@ func (g GodvilleData) GetGodPowerCharges() int {
 
 func (g GodvilleData) GetSavings() string {
 	return g.Savings
+}
+
+func (g GodvilleData) GetSavingsNum() int {
+
+	if g.GetSavings() == "" {
+		return 0
+	}
+
+	s, _ := utils.ParseSavings(g.GetSavings())
+	return s
 }
 
 func (g GodvilleData) GetBricks() int {

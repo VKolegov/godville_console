@@ -14,6 +14,7 @@ type Hero interface {
 	GetGodPower() int
 	GetGodPowerCharges() int
 	GetSavings() string
+	GetSavingsNum() int
 	GetBricks() int
 	GetWood() int
 	GetClan() string

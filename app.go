@@ -18,6 +18,8 @@ var (
 
 	eClient      *http.Client
 	eCurrentData *structs.ExtendedData
+
+	prevHeroData structs.Hero
 )
 
 func main() {
@@ -64,8 +66,10 @@ func main() {
 	}
 
 	if eClient != nil {
+		prevHeroData = structs.HeroObj{}
 		go trackExtended(10)
 	} else {
+		prevHeroData = structs.GodvilleData{}
 		go trackBasic(fullUrl, 30)
 	}
 

@@ -2,9 +2,8 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
-	"godville/commands"
+	"godville/displaying"
 	"io"
 	"net/http"
 	"time"
@@ -14,18 +13,18 @@ var (
 	lastDiaryEntry       string
 	lastNewsFromTheField string
 
-	lastHealth uint16 = 0
+	lastHealth  uint16 = 0
 	lastPrana   uint8  = 0
 	lastGoldStr string
-	lastGold   int
-	lastInvNum uint16
-	lastPillar uint16 = 0
-	lastTown   string
+	lastGold    int
+	lastInvNum  uint16
+	lastPillar  uint16 = 0
+	lastTown    string
 
 	lastBrickCnt int16 = -1
 	lastWoodCnt  int32 = -1
 
-	lastSavings       int32 = -1
+	lastSavings       int = -1
 	lastSavingsString string
 
 	//lastMonsterName string
@@ -102,7 +101,7 @@ func trackGodData() {
 		(lastWoodCnt >= 0 && lastWoodCnt != int32(currentData.WoodCnt)) ||
 		lastSavingsString != currentData.Savings {
 
-		commands.PrintGodInfo(currentData, false)
+		displaying.PrintGodInfo(currentData, false, prevHeroData)
 
 		lastPrana = currentData.Godpower
 		lastSavingsString = currentData.Savings
@@ -169,7 +168,7 @@ func trackWood() {
 
 func trackSavings() {
 
-	savings, err := parseSavings(currentData.Savings)
+	savings, err := utils.ParseSavings(currentData.Savings)
 
 	if err != nil {
 		fmt.Println(err)
@@ -184,23 +183,4 @@ func trackSavings() {
 
 		fmt.Printf("Герой отложил %d тысяч!", diff)
 	}
-}
-
-func parseSavings(savingsString string) (int32, error) {
-	var (
-		savings = 0
-		a       string // a = тысяч
-	)
-	_, err := fmt.Sscanf(savingsString, "%d %s", &savings, &a)
-
-	if err != nil {
-
-		return -1, errors.New(
-			fmt.Sprintf(
-				"Ошибка при парсинге сбережений \"%s\": %s\n", savingsString, err.Error(),
-			),
-		)
-	}
-
-	return int32(savings), nil
 }

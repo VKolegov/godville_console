@@ -1,5 +1,7 @@
 package structs
 
+import "godville/utils"
+
 type HeroObj struct {
 	Name                string        `json:"name"`                   // Имя героя
 	Godname             string        `json:"godname"`                // Имя бога
@@ -126,6 +128,16 @@ func (h HeroObj) GetGodPowerCharges() int {
 
 func (h HeroObj) GetSavings() string {
 	return h.Retirement
+}
+
+func (h HeroObj) GetSavingsNum() int {
+
+	if h.GetSavings() == "" {
+		return 0
+	}
+
+	s, _ := utils.ParseSavings(h.GetSavings())
+	return s
 }
 
 func (h HeroObj) GetBricks() int {

@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"godville/commands"
+	"godville/displaying"
 	"godville/structs"
+	"godville/utils"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
@@ -66,6 +67,10 @@ func trackExtended(rate int) {
 		)
 
 		r, _ = eClient.Get(pollQueryUrl)
+
+		if eCurrentData != nil {
+			prevHeroData = eCurrentData.Hero
+		}
 
 		// cleaning up
 		data = structs.ExtendedData{}
@@ -173,7 +178,11 @@ func trackGodDataExtended() {
 		(lastWoodCnt >= 0 && lastWoodCnt != int32(eCurrentData.Hero.WoodCnt)) ||
 		lastSavingsString != eCurrentData.Hero.Retirement {
 
-		commands.PrintGodInfo(eCurrentData.Hero, false)
+		//if prevHeroData.GetGodName() != "" {
+			displaying.PrintGodInfo(eCurrentData.Hero, false, &prevHeroData)
+		//} else {
+		//	displaying.PrintGodInfo(eCurrentData.Hero, false, nil)
+		//}
 
 		lastPrana = eCurrentData.Hero.Godpower
 		lastSavingsString = eCurrentData.Hero.Retirement
@@ -206,7 +215,7 @@ func printHeroStatus(h structs.Hero) {
 
 	var sb strings.Builder
 
-	sb.Grow(120) // 100 chars
+	sb.Grow(120) // 120 chars
 
 	sb.WriteByte('[')
 
@@ -326,7 +335,7 @@ func trackWoodExtended() {
 
 func trackSavingsExtended() {
 
-	savings, err := parseSavings(eCurrentData.Hero.Retirement)
+	savings, err := utils.ParseSavings(eCurrentData.Hero.Retirement)
 
 	if err != nil {
 		fmt.Println(err)
