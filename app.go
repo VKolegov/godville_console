@@ -1,12 +1,14 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"github.com/joho/godotenv"
 	"godville/commands"
 	"godville/structs"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -75,9 +77,7 @@ func main() {
 		go trackBasic(fullUrl, 30)
 	}
 
-	for {
-		processCommands()
-	}
+	processCommands()
 }
 
 func greetings() {
@@ -132,20 +132,42 @@ func greetings() {
 
 func processCommands() {
 	var (
+
+		r *bufio.Reader
+
+		input string
+		words []string
+
 		command string
+		parameters []string
+
+		err error
 	)
+
+	r = bufio.NewReader(os.Stdin)
+	parameters = make([]string, 8)
 
 	for {
 		command = ""
-		_, _ = fmt.Scanf("%s", &command)
+		input, _ = r.ReadString('\n')
 
-		command = strings.TrimSpace(command)
+		input = strings.TrimSpace(input)
 
-		if command == "" {
+		if input == "" {
 			continue
 		}
 
-		command = strings.ToLower(command)
+		input = strings.ToLower(input)
+
+		words = strings.Split(input, " ")
+
+		command = words[0]
+
+		if len(words) > 1 {
+			parameters = words[1:]
+		} else {
+			parameters = make([]string, 4)
+		}
 
 		switch command {
 		case "герой":
@@ -164,11 +186,13 @@ func processCommands() {
 			if eCurrentData == nil {
 				fmt.Println("Недоступно в ограниченной версии")
 			} else {
-				commands.InventoryExtended(eCurrentData)
-				fmt.Print("Введите номер предмета: ")
 				var id int
-				fmt.Scan(&id)
-				fmt.Println()
+				id, err = strconv.Atoi(parameters[0])
+
+				if err != nil {
+					fmt.Print("Не удалось распознанть номер предмета")
+					continue
+				}
 
 				commands.UseItem(id, eCurrentData, eClient)
 			}

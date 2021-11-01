@@ -47,7 +47,7 @@ func HeroExtended(eData *structs.ExtendedData) {
 	fmt.Printf(
 		"Побед на арене: %d; Поражений на арене: %d; K/D: %.2f\n",
 		eData.Hero.ArenaWon,
-		eData.Hero.ArenaWon,
+		eData.Hero.ArenaLost,
 		kd,
 	)
 }
