@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"godville/displaying"
 	"godville/structs"
-	"godville/utils"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
@@ -113,7 +112,7 @@ func trackExtended(rate int) {
 		}
 
 		if eCurrentData.Hero.Retirement != "" {
-			trackSavingsExtended()
+			trackSavings(eCurrentData.Hero, prevHeroData)
 		}
 
 		cnt++
@@ -178,11 +177,7 @@ func trackGodDataExtended() {
 		(lastWoodCnt >= 0 && lastWoodCnt != int32(eCurrentData.Hero.WoodCnt)) ||
 		lastSavingsString != eCurrentData.Hero.Retirement {
 
-		//if prevHeroData.GetGodName() != "" {
-			displaying.PrintGodInfo(eCurrentData.Hero, false, &prevHeroData)
-		//} else {
-		//	displaying.PrintGodInfo(eCurrentData.Hero, false, nil)
-		//}
+		displaying.PrintGodInfo(eCurrentData.Hero, false, prevHeroData)
 
 		lastPrana = eCurrentData.Hero.Godpower
 		lastSavingsString = eCurrentData.Hero.Retirement
@@ -231,7 +226,6 @@ func printHeroStatus(h structs.Hero) {
 		sb.WriteString(pillarStr)
 		sb.WriteByte(')')
 	}
-
 
 	sb.WriteByte(']')
 
@@ -333,27 +327,24 @@ func trackWoodExtended() {
 	}
 }
 
-func trackSavingsExtended() {
+func trackSavings(h structs.Hero, p structs.Hero) {
 
-	savings, err := utils.ParseSavings(eCurrentData.Hero.Retirement)
-
-	if err != nil {
-		fmt.Println(err)
+	if p == nil {
 		return
 	}
 
-	if lastSavings == -1 {
-		lastSavings = savings
-	} else if lastSavings != savings {
+	s := h.GetSavingsNum()
+	pS := p.GetSavingsNum()
 
-		diff := savings - lastSavings
-		lastSavings = savings
+	if s != pS {
+
+		diff := s - pS
 
 		fmt.Printf(
-			"[Сбережения] %s отложил %d тысяч! Итого: %d тыс.",
-			eCurrentData.Hero.Name,
+			"[Сбережения] %s отложил %d тысяч! Итого: %s\n",
+			h.GetName(),
 			diff,
-			savings,
+			h.GetSavings(),
 		)
 	}
 }

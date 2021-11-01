@@ -82,6 +82,10 @@ type HeroObj struct {
 	ArenaGodCmdDisabled bool          `json:"arena_god_cmd_disabled"` // Пульт отключен в режиме арены
 }
 
+func (h HeroObj) GetName() string {
+	return h.Name
+}
+
 func (h HeroObj) GetHealth() int {
 	return int(h.Health)
 }

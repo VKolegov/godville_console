@@ -7,15 +7,7 @@ import (
 	"strings"
 )
 
-func PrintGodInfo(g structs.Hero, clanInfo bool, prev *structs.Hero) {
-
-	var (
-		p structs.Hero
-	)
-
-	if prev != nil {
-		p = *prev
-	}
+func PrintGodInfo(g structs.Hero, clanInfo bool, p structs.Hero) {
 
 	sb := strings.Builder{}
 	sb.Grow(128)
@@ -28,7 +20,7 @@ func PrintGodInfo(g structs.Hero, clanInfo bool, prev *structs.Hero) {
 	sb.WriteString(strconv.Itoa(g.GetGodPower()))
 	sb.WriteByte('%')
 
-	if prev != nil {
+	if p != nil {
 		appendDiff(g.GetGodPower(), p.GetGodPower(), &sb)
 	}
 
@@ -36,7 +28,7 @@ func PrintGodInfo(g structs.Hero, clanInfo bool, prev *structs.Hero) {
 		sb.WriteString("; Зарядов праны: ")
 		sb.WriteString(strconv.Itoa(g.GetGodPowerCharges()))
 
-		if prev != nil {
+		if p != nil {
 			appendDiff(g.GetGodPowerCharges(), p.GetGodPowerCharges(), &sb)
 		}
 	}
@@ -45,7 +37,7 @@ func PrintGodInfo(g structs.Hero, clanInfo bool, prev *structs.Hero) {
 		sb.WriteString("; Золотых кирпичей: ")
 		sb.WriteString(strconv.Itoa(g.GetBricks()))
 
-		if prev != nil {
+		if p != nil {
 			appendDiff(g.GetBricks(), p.GetBricks(), &sb)
 		}
 	}
@@ -54,7 +46,7 @@ func PrintGodInfo(g structs.Hero, clanInfo bool, prev *structs.Hero) {
 		sb.WriteString("; Дерева для ковчега: ")
 		sb.WriteString(strconv.Itoa(g.GetWood()))
 
-		if prev != nil {
+		if p != nil {
 			appendDiff(g.GetWood(), p.GetWood(), &sb)
 		}
 	}
@@ -63,7 +55,7 @@ func PrintGodInfo(g structs.Hero, clanInfo bool, prev *structs.Hero) {
 		sb.WriteString("; Сбережений: ")
 		sb.WriteString(g.GetSavings())
 
-		if prev != nil {
+		if p != nil {
 			appendDiff(g.GetSavingsNum(), p.GetSavingsNum(), &sb)
 		}
 	}

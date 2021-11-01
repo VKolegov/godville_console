@@ -37,6 +37,10 @@ type GodvilleData struct {
 	Activatables      []string `json:"activatables"`
 }
 
+func (g GodvilleData) GetName() string {
+	return g.Name
+}
+
 func (g GodvilleData) GetHealth() int {
 	return int(g.Health)
 }

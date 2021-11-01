@@ -87,7 +87,7 @@ func trackBasic(url string, rate int) {
 		}
 
 		if currentData.Savings != "" {
-			trackSavings()
+			trackSavings(currentData, prevHeroData)
 		}
 
 		time.Sleep(time.Second * time.Duration(rate))
@@ -163,24 +163,5 @@ func trackWood() {
 
 	if currentData.WoodCnt == 1000 {
 		fmt.Printf("%s собрал дерево для постройки ковчега!\n", currentData.Name)
-	}
-}
-
-func trackSavings() {
-
-	savings, err := utils.ParseSavings(currentData.Savings)
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	if lastSavings == -1 {
-		lastSavings = savings
-	} else if lastSavings != savings {
-
-		diff := savings - lastSavings
-
-		fmt.Printf("Герой отложил %d тысяч!", diff)
 	}
 }

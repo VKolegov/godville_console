@@ -1,6 +1,7 @@
 package structs
 
 type Hero interface {
+	GetName() string
 	GetHealth() int
 	GetMaxHealth() int
 	GetInvNum() int
