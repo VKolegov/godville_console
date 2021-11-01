@@ -36,7 +36,7 @@ func PrintHeroStatus(h structs.Hero, p structs.Hero, datetimeLayout string) {
 		sb.WriteByte(')')
 	}
 
-	sb.WriteByte(']')
+	sb.WriteString("] ")
 
 	// fight
 
@@ -52,40 +52,50 @@ func PrintHeroStatus(h structs.Hero, p structs.Hero, datetimeLayout string) {
 		if p != nil && p.GetMonster() == h.GetMonster() {
 			appendDiff(h.GetMonsterProgress(), p.GetMonsterProgress(), &sb)
 		}
+
+		sb.WriteString(" | ")
 	}
-	sb.WriteByte(';')
 
 	// health
 	health := h.GetHealth()
-	sb.WriteString(" Здоровье героя: ")
-	sb.WriteString(strconv.Itoa(health))
-	sb.WriteByte('/')
-	sb.WriteString(strconv.Itoa(h.GetMaxHealth()))
+	sb.WriteString("Здоровье: ")
+	sb.WriteString(HealthColor.Sprint(" "))
+	sb.WriteString(HealthColor.Sprint(strconv.Itoa(health)))
+	sb.WriteString(HealthColor.Sprint("/"))
+	sb.WriteString(HealthColor.Sprint(strconv.Itoa(h.GetMaxHealth())))
+	sb.WriteString(HealthColor.Sprint(" "))
 
 	if p != nil {
 		appendDiff(health, p.GetHealth(), &sb)
 	}
 
+	sb.WriteString(" | ")
+
 	// gold
-	sb.WriteString(" Золота: ")
-	sb.WriteString(h.GetGoldApprox())
+	sb.WriteString("Золота: ")
+
+	sb.WriteString(GoldColor.Sprint(" "))
+	sb.WriteString(GoldColor.Sprint(h.GetGoldApprox()))
+	sb.WriteString(GoldColor.Sprint(" "))
 
 	if h.GetGold() >= 0 && p != nil {
 		appendDiff(h.GetGold(), p.GetGold(), &sb)
 	}
-	sb.WriteByte(';')
+	sb.WriteString(" | ")
 
 	// inventory
 	invNum := h.GetInvNum()
-	sb.WriteString(" Инвентарь: ")
-	sb.WriteString(strconv.Itoa(invNum))
-	sb.WriteByte('/')
-	sb.WriteString(strconv.Itoa(h.GetMaxInvNum()))
+	sb.WriteString("Инвентарь: ")
+
+	sb.WriteString(InventoryColor.Sprint(" "))
+	sb.WriteString(InventoryColor.Sprint(strconv.Itoa(invNum)))
+	sb.WriteString(InventoryColor.Sprint("/"))
+	sb.WriteString(InventoryColor.Sprint(strconv.Itoa(h.GetMaxInvNum())))
+	sb.WriteString(InventoryColor.Sprint(" "))
 
 	if p != nil {
 		appendDiff(h.GetInvNum(), p.GetInvNum(), &sb)
 	}
-	sb.WriteByte(';')
 
 	sb.WriteByte('\n')
 

@@ -2,8 +2,11 @@ package commands
 
 import (
 	"fmt"
+	"github.com/fatih/color"
+	"godville/displaying"
 	"godville/structs"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -65,7 +68,19 @@ func Inventory(data structs.GodvilleData) {
 }
 
 func InventoryExtended(eData *structs.ExtendedData) {
-	fmt.Printf("Инвентарь: %d/%d\n", eData.Hero.InventoryNum, eData.Hero.InventoryMaxNum)
+
+	sb := strings.Builder{}
+
+	sb.WriteString("Инвентарь: ")
+
+	sb.WriteString(displaying.InventoryColor.Sprint(" "))
+	sb.WriteString(displaying.InventoryColor.Sprint(strconv.Itoa(int(eData.Hero.InventoryNum))))
+	sb.WriteString(displaying.InventoryColor.Sprint("/"))
+	sb.WriteString(displaying.InventoryColor.Sprint(strconv.Itoa(int(eData.Hero.InventoryMaxNum))))
+	sb.WriteString(displaying.InventoryColor.Sprint(" "))
+	sb.WriteByte('\n')
+
+	fmt.Print(sb.String())
 
 	if len(eData.Inventory) == 0 {
 		return
@@ -76,16 +91,29 @@ func InventoryExtended(eData *structs.ExtendedData) {
 
 		fmt.Printf("   - [%d] ", item.Pos)
 
+		if itemName == "золотой кирпич" {
+			displaying.GoldColor.Set()
+		}
+
+		if item.Price > 100 {
+			color.Set(color.Bold)
+		}
+
+		if item.Type == "heal_potion" {
+			color.Set(color.FgGreen)
+		}
+
 		if item.ActivateByUser {
 			fmt.Print("@ ")
 		}
 
+		fmt.Printf("%s", itemName)
 		if item.Cnt > 1 {
-			fmt.Printf("%s (%d шт.)", itemName, item.Cnt)
+			fmt.Printf(" (%d шт.)", item.Cnt)
 		}
 
 		if item.Price >= 100 {
-			fmt.Print(" (цен.)")
+			fmt.Print(" (ценн.)")
 		}
 		if item.Type == "heal_potion" {
 			fmt.Print(" (леч.)")
@@ -99,6 +127,7 @@ func InventoryExtended(eData *structs.ExtendedData) {
 			fmt.Printf(" (цена: %d праны)", item.NeedsGodpower)
 		}
 
+		color.Set(color.Reset)
 		fmt.Print("\n")
 	}
 }
@@ -128,27 +157,38 @@ func UseItem(id int, d *structs.ExtendedData, c *http.Client) {
 		itemName string
 		item     structs.InventoryItem
 
+		found bool
+
 		err error
 	)
 
 	for itemName, item = range d.Inventory {
 		if item.Pos == id {
+			found = true
 			break
 		}
 	}
 
+	if !found {
+		displaying.InventoryColor.Printf("[Инвентарь] Предмет с таким ID не найден")
+		fmt.Print("\n")
+		return
+	}
+
 	if item.ActivateByUser == false {
-		fmt.Printf("[Инвентарь] %s нельзя активировать\n", itemName)
+		displaying.InventoryColor.Printf("[Инвентарь] %s нельзя активировать", itemName)
+		fmt.Print("\n")
 		return
 	}
 
 	if d.Hero.Godpower < item.NeedsGodpower {
-		fmt.Printf(
-			"[Инвентарь] Не хватает силёнок чтобы активировать %s (%d/%d)\n",
+		displaying.InventoryColor.Printf(
+			"[Инвентарь] Не хватает силёнок чтобы активировать %s (%d/%d)",
 			itemName,
 			d.Hero.Godpower,
 			item.NeedsGodpower,
 		)
+		fmt.Print("\n")
 		return
 	}
 
@@ -159,9 +199,15 @@ func UseItem(id int, d *structs.ExtendedData, c *http.Client) {
 	_, err = MakeFeedPostRequest(c, "agQHqM4rCoT0CaDvq44I", rData)
 
 	if err != nil {
-		fmt.Printf("[Инвентарь] Не смогли активировать %s, причина: %s", itemName, err.Error())
+		displaying.InventoryColor.Printf(
+			"[Инвентарь] Не смогли активировать %s, причина: %s",
+			itemName,
+			err.Error(),
+		)
+		fmt.Print("\n")
 		return
 	}
 
-	fmt.Printf("[Инвентарь] Активировали %s!\n", itemName)
+	displaying.InventoryColor.Printf("[Инвентарь] Активировали %s!", itemName)
+	fmt.Print("\n")
 }

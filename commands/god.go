@@ -32,7 +32,8 @@ func MakeInfluence(influenceType string, eData *structs.ExtendedData, eClient *h
 	}
 
 	if eData.Hero.Godpower < 25 {
-		fmt.Printf("На %s, увы, силёнок не хватает\n", influenceName)
+		displaying.PranaColor.Printf("На %s, увы, силёнок не хватает", influenceName)
+		fmt.Print("\n")
 		return
 	}
 
@@ -46,18 +47,27 @@ func MakeInfluence(influenceType string, eData *structs.ExtendedData, eClient *h
 	responseBody, err = MakeFeedPostRequest(eClient, "5JgMUahE1BYdtf7quoWz", rData)
 
 	if err != nil {
-		fmt.Printf("[Влияние:%s] Не удалось повлиять. Причина: %s", influenceName, err.Error())
+		displaying.PranaColor.Printf(
+			"[Влияние:%s] Не удалось повлиять. Причина: %s",
+			influenceName,
+			err.Error(),
+		)
 		return
 	}
 
 	err = json.Unmarshal(responseBody, &influenceResponse)
 
 	if err != nil {
-		fmt.Printf("[Влияние:%s] Не удалось распознать результат влияния: %s", influenceName, err.Error())
+		displaying.PranaColor.Printf(
+			"[Влияние:%s] Не удалось распознать результат влияния: %s",
+			influenceName,
+			err.Error(),
+		)
 		return
 	}
 
-	fmt.Printf("[Влияние:%s] %s\n", influenceName, influenceResponse.DisplayString)
+	displaying.PranaColor.Printf("[Влияние:%s] %s", influenceName, influenceResponse.DisplayString)
+	fmt.Print("\n")
 }
 
 func ResurrectHero(c *http.Client, d *structs.ExtendedData) {
@@ -66,7 +76,8 @@ func ResurrectHero(c *http.Client, d *structs.ExtendedData) {
 	)
 
 	if d.Hero.Health > 0 {
-		fmt.Printf("%s здоров как бык!... По крайней мере, ещё дышит\n", d.Hero.Name)
+		displaying.HealthColor.Printf("%s здоров как бык!... По крайней мере, ещё дышит", d.Hero.Name)
+		fmt.Print("\n")
 		return
 	}
 
@@ -77,11 +88,13 @@ func ResurrectHero(c *http.Client, d *structs.ExtendedData) {
 	_, err = MakeFeedPostRequest(c, "5JgMUahE1BYdtf7quoWz", rData)
 
 	if err != nil {
-		fmt.Printf("[Оживление] Ошибка при попытке оживить героя: %s\n", err.Error())
+		displaying.HealthColor.Printf("[Оживление] Ошибка при попытке оживить героя: %s", err.Error())
+		fmt.Print("\n")
 		return
 	}
 
-	fmt.Printf("[Оживление] %s оживлён!\n", d.Hero.Name)
+	displaying.HealthColor.Printf("[Оживление] %s оживлён!", d.Hero.Name)
+	fmt.Print("\n")
 }
 
 func GodPhrase(phrase string, c *http.Client, d *structs.ExtendedData) {
@@ -90,7 +103,8 @@ func GodPhrase(phrase string, c *http.Client, d *structs.ExtendedData) {
 	)
 
 	if d.Hero.Godpower < 5 {
-		fmt.Printf("Извини, %s, ты слишком слаб и пока помолчишь...\n", d.Hero.Godname)
+		displaying.PranaColor.Printf("Извини, %s, ты слишком слаб и пока помолчишь...", d.Hero.Godname)
+		fmt.Print("\n")
 		return
 	}
 
@@ -102,9 +116,11 @@ func GodPhrase(phrase string, c *http.Client, d *structs.ExtendedData) {
 	_, err = MakeFeedPostRequest(c, "5JgMUahE1BYdtf7quoWz", rData)
 
 	if err != nil {
-		fmt.Printf("[Глас] Ошибка при попытке произнести глас: %s\n", err.Error())
+		displaying.PranaColor.Printf("[Глас] Ошибка при попытке произнести глас: %s", err.Error())
+		fmt.Print("\n")
 		return
 	}
 
-	fmt.Printf("[Глас] Да услышит же %s твои сладкие речи!\n", d.Hero.Name)
+	displaying.PranaColor.Printf("[Глас] Да услышит же %s твои сладкие речи!", d.Hero.Name)
+	fmt.Print("\n")
 }

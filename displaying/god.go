@@ -26,43 +26,56 @@ func PrintGodStatus(g structs.Hero, clanInfo bool, p structs.Hero, datetimeLayou
 	sb.WriteString("] ")
 
 	sb.WriteString("Прана: ")
-	sb.WriteString(strconv.Itoa(g.GetGodPower()))
-	sb.WriteByte('%')
+	sb.WriteString(PranaColor.Sprint(" "))
+	sb.WriteString(PranaColor.Sprint(strconv.Itoa(g.GetGodPower())))
+	sb.WriteString(PranaColor.Sprint("%"))
+	sb.WriteString(PranaColor.Sprint(" "))
 
 	if p != nil {
 		appendDiff(g.GetGodPower(), p.GetGodPower(), &sb)
 	}
 
+	sb.WriteString(" | ")
+
 	if g.GetGodPowerCharges() >= 0 {
-		sb.WriteString("; Зарядов праны: ")
+		sb.WriteString("Зарядов праны: ")
 		sb.WriteString(strconv.Itoa(g.GetGodPowerCharges()))
 
 		if p != nil {
 			appendDiff(g.GetGodPowerCharges(), p.GetGodPowerCharges(), &sb)
 		}
+
+		sb.WriteString(" | ")
 	}
 
 	if g.GetBricks() < 1000 {
-		sb.WriteString("; Золотых кирпичей: ")
+		sb.WriteString("Золотых кирпичей: ")
 		sb.WriteString(strconv.Itoa(g.GetBricks()))
 
 		if p != nil {
 			appendDiff(g.GetBricks(), p.GetBricks(), &sb)
 		}
+
+		sb.WriteString(" | ")
 	}
 
 	if g.GetWood() < 1000 {
-		sb.WriteString("; Дерева для ковчега: ")
+		sb.WriteString("Дерева для ковчега: ")
 		sb.WriteString(strconv.Itoa(g.GetWood()))
 
 		if p != nil {
 			appendDiff(g.GetWood(), p.GetWood(), &sb)
 		}
+
+		sb.WriteString(" | ")
 	}
 
 	if g.GetSavingsNum() >= 0 {
-		sb.WriteString("; Сбережений: ")
-		sb.WriteString(g.GetSavings())
+		sb.WriteString("Сбережений: ")
+
+		sb.WriteString(GoldColor.Sprint(" "))
+		sb.WriteString(GoldColor.Sprint(g.GetSavings()))
+		sb.WriteString(GoldColor.Sprint(" "))
 
 		if p != nil {
 			appendDiff(g.GetSavingsNum(), p.GetSavingsNum(), &sb)

@@ -12,7 +12,7 @@ func appendDiff(curr, last int, sb *strings.Builder) {
 	if diff != 0 {
 
 		diffStr := strconv.Itoa(diff)
-		sb.WriteString(" (")
+		sb.WriteByte('(')
 
 		if diff < 0 {
 			sb.WriteString(diffStr)

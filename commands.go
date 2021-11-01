@@ -82,6 +82,12 @@ func processCommands() {
 			if eCurrentData == nil {
 				fmt.Println("Недоступно в ограниченной версии")
 			} else {
+
+				if len(parameters) == 0 {
+					fmt.Println("А что активируем-то?")
+					continue
+				}
+
 				var id int
 				id, err = strconv.Atoi(parameters[0])
 
