@@ -27,17 +27,15 @@ jobs:
 
       - name: 🔨 Build Go App (Linux)
         run: |
-          export GOBUILDFLAGS="-ldflags=-w"
-          echo "::set-env name=GOBUILDFLAGS::$GOBUILDFLAGS"
-          go build -o linux/godville $GOBUILDFLAGS
+          go build -o linux/godville -ldflags=-w
 
       - name: 🔨 Build Go App (MacOS)
         run: |
-          GOOS=macos; GOARCH=amd64; go build -o macos/godville $GOBUILDFLAGS
+          GOOS=macos; GOARCH=amd64; go build -o macos/godville -ldflags=-w
 
       - name: 🔨 Build Go App (Windows)
         run: |
-          GOOS=windows; GOARCH=amd64; go build -o windows/godville.exe $GOBUILDFLAGS
+          GOOS=windows; GOARCH=amd64; go build -o windows/godville.exe -ldflags=-w
 
       - name: Create config filee
         run: |
