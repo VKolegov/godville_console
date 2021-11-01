@@ -81,5 +81,30 @@ func ResurrectHero(c *http.Client, d *structs.ExtendedData) {
 		return
 	}
 
-	fmt.Printf("[Оживление] Герой оживлён!\n")
+	fmt.Printf("[Оживление] %s оживлён!\n", d.Hero.Name)
+}
+
+func GodPhrase(phrase string, c *http.Client, d *structs.ExtendedData) {
+	var (
+		err error
+	)
+
+	if d.Hero.Godpower < 5 {
+		fmt.Printf("Извини, %s, ты слишком слаб и пока помолчишь...\n", d.Hero.Godname)
+		return
+	}
+
+	rData := map[string]interface{}{
+		"action": "god_phrase",
+		"god_phrase": phrase,
+	}
+
+	_, err = MakeFeedPostRequest(c, "5JgMUahE1BYdtf7quoWz", rData)
+
+	if err != nil {
+		fmt.Printf("[Глас] Ошибка при попытке произнести глас: %s\n", err.Error())
+		return
+	}
+
+	fmt.Printf("[Глас] Да услышит же %s твои сладкие речи!\n", d.Hero.Name)
 }

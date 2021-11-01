@@ -12,7 +12,7 @@ var HTable = map[string]string{
 	"agQHqM4rCoT0CaDvq44I": "2ahcM6oMrfS4DfuMyv1g", // action: activate item
 	"54pcE5UCp82zxcEQcBwj": "Vy0FUsHs0T6sqqDFobCW",
 	"lvBuKwP7tQetJZNXXQx7": "9tUdvaq6kWLAKOMcadwv",
-	"5JgMUahE1BYdtf7quoWz": "YFQT8EtYAQwiIgmiUA2V", // actions: encourage, punish, resurrect, maybe something else
+	"5JgMUahE1BYdtf7quoWz": "YFQT8EtYAQwiIgmiUA2V", // actions: encourage, punish, resurrect, god_phrase, etc
 	"AutpNDRqXwoLg9hzWgvf": "dhIAaOQ3vrSTEpliBoxP",
 	"c9HO6tIeHlpMJTW6674M": "7QU0UiH0O3Zk5hF1smAd",
 	"QCFRPkOrNhNB5tAZhEy5": "pkZ8dUzy0spUvy5XyYs4",

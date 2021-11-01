@@ -145,7 +145,7 @@ func processCommands() {
 	)
 
 	r = bufio.NewReader(os.Stdin)
-	parameters = make([]string, 8)
+	parameters = make([]string, 0, 4)
 
 	for {
 		command = ""
@@ -166,7 +166,7 @@ func processCommands() {
 		if len(words) > 1 {
 			parameters = words[1:]
 		} else {
-			parameters = make([]string, 4)
+			parameters = make([]string, 0, 4)
 		}
 
 		switch command {
@@ -226,6 +226,24 @@ func processCommands() {
 			} else {
 				commands.ResurrectHero(eClient, eCurrentData)
 			}
+		case "глас", "г":
+			if eCurrentData == nil {
+				fmt.Println("Недоступно в ограниченной версии")
+			} else {
+
+				if len(parameters) == 0 {
+					fmt.Println("А что сказать-то хотел?")
+					continue
+				}
+
+				ph := parameters[0]
+
+				if len(parameters) > 1 {
+					ph = strings.Join(parameters, " ")
+				}
+
+				commands.GodPhrase(ph, eClient, eCurrentData)
+			}
 		case "бог", "я":
 			if eCurrentData == nil {
 				commands.PrintGodInfo(currentData, true)
@@ -248,7 +266,7 @@ func commandList() {
 	fmt.Println("Команды:")
 	fmt.Println("	'герой' 							- вывести информацию о герое")
 	fmt.Println("	'инвентарь' или 'инв' 				- вывести информацию об инвентаре героя")
-	fmt.Println("	'предмет', 'исп' или 'п' 			- активировать предмет в инвентаре")
+	fmt.Println("	'предмет', 'исп' или 'п' #n			- активировать предмет в инвентаре")
 	fmt.Println("	'снаряжение' или 'снар' 			- вывести информацию о снаряжении героя (недоступно в огранич. версии)")
 	fmt.Println("	'бог' или 'я' 						- вывести информацию об себе (божестве)")
 	fmt.Println("	'квест' 							- вывести информацию о текущем задании")
