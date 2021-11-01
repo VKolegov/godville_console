@@ -20,6 +20,8 @@ var (
 	eCurrentData *structs.ExtendedData
 
 	prevHeroData structs.Hero
+
+	datetimeLayout string
 )
 
 func main() {
@@ -64,6 +66,8 @@ func main() {
 	} else {
 		fmt.Println("Не указан пароль. Режим ограниченного функционала")
 	}
+
+	datetimeLayout = os.Getenv("DATETIME_FORMAT")
 
 	if eClient != nil {
 		go trackExtended(10)

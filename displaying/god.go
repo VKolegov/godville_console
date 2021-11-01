@@ -5,12 +5,21 @@ import (
 	"godville/structs"
 	"strconv"
 	"strings"
+	"time"
 )
 
-func PrintGodInfo(g structs.Hero, clanInfo bool, p structs.Hero) {
+func PrintGodStatus(g structs.Hero, clanInfo bool, p structs.Hero, datetimeLayout string) {
+
 
 	sb := strings.Builder{}
-	sb.Grow(128)
+	sb.Grow(256)
+
+	if datetimeLayout != "" {
+		t := time.Now()
+		sb.WriteByte('[')
+		sb.WriteString(t.Format(datetimeLayout))
+		sb.WriteByte(']')
+	}
 
 	sb.WriteByte('[')
 	sb.WriteString(g.GetGodName())

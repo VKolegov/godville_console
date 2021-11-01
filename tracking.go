@@ -101,7 +101,7 @@ func trackGodData() {
 		(lastWoodCnt >= 0 && lastWoodCnt != int32(currentData.WoodCnt)) ||
 		lastSavingsString != currentData.Savings {
 
-		displaying.PrintGodInfo(currentData, false, prevHeroData)
+		displaying.PrintGodStatus(currentData, false, prevHeroData, datetimeLayout)
 
 		lastPrana = currentData.Godpower
 		lastSavingsString = currentData.Savings
@@ -120,7 +120,7 @@ func trackHeroData() {
 		lastTown != currentData.TownName ||
 		lastGoldStr != currentData.GoldApprox {
 
-		displaying.PrintHeroStatus(currentData, prevHeroData)
+		displaying.PrintHeroStatus(currentData, prevHeroData, datetimeLayout)
 
 		lastHealth = currentData.Health
 		lastTown = currentData.TownName

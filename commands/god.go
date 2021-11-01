@@ -9,7 +9,7 @@ import (
 )
 
 func PrintGodInfo(g structs.Hero, clanInfo bool) {
-	displaying.PrintGodInfo(g, clanInfo, nil)
+	displaying.PrintGodStatus(g, clanInfo, nil, "")
 }
 
 func MakeInfluence(influenceType string, eData *structs.ExtendedData, eClient *http.Client) {

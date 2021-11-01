@@ -5,13 +5,21 @@ import (
 	"godville/structs"
 	"strconv"
 	"strings"
+	"time"
 )
 
-func PrintHeroStatus(h structs.Hero, p structs.Hero) {
+func PrintHeroStatus(h structs.Hero, p structs.Hero, datetimeLayout string) {
 
 	var sb strings.Builder
 
-	sb.Grow(120) // 120 chars
+	sb.Grow(256)
+
+	if datetimeLayout != "" {
+		t := time.Now()
+		sb.WriteByte('[')
+		sb.WriteString(t.Format(datetimeLayout))
+		sb.WriteByte(']')
+	}
 
 	sb.WriteByte('[')
 

@@ -47,6 +47,7 @@ jobs:
           echo "PASSWORD=" >> settings.cfg
           echo "AUTO_EVIL_INFLUENCE_THRESHOLD=100" >> settings.cfg
           echo "MONSTER_PROGRESS_THRESHOLD=50" >> settings.cfg
+          echo "DATETIME_FORMAT=\"2006-01-02 15:04:05\"" >> settings.cfg
           cp settings.cfg linux/settings.cfg
           cp settings.cfg macos/settings.cfg
           cp settings.cfg windows/settings.cfg
