@@ -24,11 +24,8 @@ var (
 	lastBrickCnt int16 = -1
 	lastWoodCnt  int32 = -1
 
-	lastSavings       int = -1
 	lastSavingsString string
 
-	//lastMonsterName string
-	lastMonsterProgress uint16
 )
 
 func trackBasic(url string, rate int) {

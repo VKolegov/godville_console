@@ -9,8 +9,6 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
-	"strconv"
-	"strings"
 	"time"
 )
 
@@ -114,7 +112,6 @@ func trackExtended(rate int) {
 
 		trackGodDataExtended()
 		trackHeroDataExtended()
-		trackFight()
 
 		if lastDiaryEntry != eCurrentData.Hero.DiaryLast {
 			lastDiaryEntry = eCurrentData.Hero.DiaryLast
@@ -230,26 +227,6 @@ func trackHeroDataExtended() {
 	}
 }
 
-func trackFight() {
-	// Идёт сражение
-	if eCurrentData.Hero.MonsterName != "" {
-
-		if lastMonsterProgress != eCurrentData.Hero.MonsterProgress {
-			fmt.Printf(
-				"%s сражается с %s (%d/100)\n",
-				eCurrentData.Hero.Name,
-				eCurrentData.Hero.MonsterName,
-				eCurrentData.Hero.MonsterProgress,
-			)
-
-			lastMonsterProgress = eCurrentData.Hero.MonsterProgress
-		}
-
-	} else {
-		lastMonsterProgress = 0
-	}
-}
-
 func trackBricksExtended() {
 
 	bCnt := int16(currentData.BricksCnt)
@@ -313,25 +290,5 @@ func trackSavings(h structs.Hero, p structs.Hero) {
 			diff,
 			h.GetSavings(),
 		)
-	}
-}
-
-func appendDiff(curr, last int, sb *strings.Builder) {
-
-	diff := curr - last
-
-	if diff != 0 {
-
-		diffStr := strconv.Itoa(diff)
-		sb.WriteString(" (")
-
-		if diff < 0 {
-			sb.WriteString(diffStr)
-		} else {
-			sb.WriteByte('+')
-			sb.WriteString(diffStr)
-		}
-
-		sb.WriteByte(')')
 	}
 }

@@ -20,4 +20,7 @@ type Hero interface {
 	GetWood() int
 	GetClan() string
 	GetClanPosition() string
+
+	GetMonster() string
+	GetMonsterProgress() int
 }

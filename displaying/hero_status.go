@@ -38,6 +38,22 @@ func PrintHeroStatus(h structs.Hero, p structs.Hero, datetimeLayout string) {
 
 	sb.WriteByte(']')
 
+	// fight
+
+	// Идёт сражение
+	if h.GetMonster() != "" {
+
+		sb.WriteString(" Сражение с: ")
+		sb.WriteString(h.GetMonster())
+		sb.WriteString(" (")
+		sb.WriteString(strconv.Itoa(h.GetMonsterProgress()))
+		sb.WriteString("/100)")
+
+		if p != nil && p.GetMonster() == h.GetMonster() {
+			appendDiff(h.GetMonsterProgress(), p.GetMonsterProgress(), &sb)
+		}
+	}
+
 	// health
 	health := h.GetHealth()
 	sb.WriteString(" Здоровье: ")

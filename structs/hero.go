@@ -159,3 +159,11 @@ func (h HeroObj) GetClan() string {
 func (h HeroObj) GetClanPosition() string {
 	return h.ClanPosition
 }
+
+func (h HeroObj) GetMonster() string {
+	return h.MonsterName
+}
+
+func (h HeroObj) GetMonsterProgress() int {
+	return int(h.MonsterProgress)
+}

@@ -114,3 +114,11 @@ func (g GodvilleData) GetClan() string {
 func (g GodvilleData) GetClanPosition() string {
 	return g.ClanPosition
 }
+
+func (g GodvilleData) GetMonster() string {
+	return ""
+}
+
+func (g GodvilleData) GetMonsterProgress() int {
+	return 0
+}
