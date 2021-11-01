@@ -37,13 +37,12 @@ func login(username, password string) error {
 	return nil
 }
 
-func trackExtended(rate int) {
+func fetchExtended(cnt uint) error {
 
 	var (
 		r *http.Response
 
-		initialRequest = true
-		data           structs.ExtendedData
+		data structs.ExtendedData
 
 		// this value is fixed, apparently
 		// it's taken from https://godville.net/superhero
@@ -54,33 +53,59 @@ func trackExtended(rate int) {
 		// so, "u2" field is basically poll url
 		pollUrl      string = "https://godville.net/fbh/feed?a=GjZLI9oQGPkBZMqMMMP3KYBRVcqmu"
 		pollQueryUrl string
-		cnt          uint = 0
 
 		err error
 	)
 
+	pollQueryUrl = fmt.Sprintf(
+		"%s&cnt=%d", pollUrl, cnt,
+	)
+
+	r, err = eClient.Get(pollQueryUrl)
+
+	if err != nil {
+		return err
+	}
+
+	if eCurrentData != nil {
+		prevHeroData = eCurrentData.Hero
+	}
+
+	// cleaning up
+	data = structs.ExtendedData{}
+
+	err = json.NewDecoder(r.Body).Decode(&data)
+
+	if err != nil {
+		return errors.New(
+			fmt.Sprintf("Error while decoding extended data: %s", err.Error()),
+		)
+	}
+
+	eCurrentData = &data
+
+	return nil
+}
+
+func trackExtended(rate int) {
+
+	var (
+		initialRequest bool = true
+		cnt            uint = 0
+		err            error
+	)
+
 	for {
 
-		pollQueryUrl = fmt.Sprintf(
-			"%s&cnt=%d", pollUrl, cnt,
-		)
-
-		r, _ = eClient.Get(pollQueryUrl)
-
-		if eCurrentData != nil {
-			prevHeroData = eCurrentData.Hero
-		}
-
-		// cleaning up
-		data = structs.ExtendedData{}
-
-		err = json.NewDecoder(r.Body).Decode(&data)
+		err = fetchExtended(cnt)
+		cnt++
 
 		if err != nil {
-			fmt.Printf("Error while decoding extended data: %s", err.Error())
+			fmt.Printf("[Ошибка] Ошибка при запросе расширенных данных: %s\n", err.Error())
+			fmt.Print("[Ошибка] Ждём 30 секунд, пробуем снова...\n")
+			time.Sleep(time.Second * 30)
+			continue
 		}
-
-		eCurrentData = &data
 
 		if initialRequest {
 			greetingsExtended()
@@ -115,7 +140,6 @@ func trackExtended(rate int) {
 			trackSavings(eCurrentData.Hero, prevHeroData)
 		}
 
-		cnt++
 		time.Sleep(time.Second * time.Duration(rate))
 	}
 }
