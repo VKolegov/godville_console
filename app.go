@@ -66,10 +66,8 @@ func main() {
 	}
 
 	if eClient != nil {
-		prevHeroData = structs.HeroObj{}
 		go trackExtended(10)
 	} else {
-		prevHeroData = structs.GodvilleData{}
 		go trackBasic(fullUrl, 30)
 	}
 

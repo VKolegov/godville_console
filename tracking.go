@@ -120,7 +120,7 @@ func trackHeroData() {
 		lastTown != currentData.TownName ||
 		lastGoldStr != currentData.GoldApprox {
 
-		printHeroStatus(currentData)
+		displaying.PrintHeroStatus(currentData, prevHeroData)
 
 		lastHealth = currentData.Health
 		lastTown = currentData.TownName

@@ -195,7 +195,7 @@ func trackHeroDataExtended() {
 		lastGoldStr != hero.GoldWe ||
 		lastInvNum != hero.InventoryNum {
 
-		printHeroStatus(hero)
+		displaying.PrintHeroStatus(hero, prevHeroData)
 
 		lastHealth = hero.Health
 		lastTown = hero.TownName
@@ -204,63 +204,6 @@ func trackHeroDataExtended() {
 		lastGold = hero.Gold
 		lastInvNum = hero.InventoryNum
 	}
-}
-
-func printHeroStatus(h structs.Hero) {
-
-	var sb strings.Builder
-
-	sb.Grow(120) // 120 chars
-
-	sb.WriteByte('[')
-
-	pillarStr := strconv.Itoa(h.GetPillar())
-
-	town := h.GetTown()
-	if town == "" {
-		sb.WriteString("Столб #")
-		sb.WriteString(pillarStr)
-	} else {
-		sb.WriteString(town)
-		sb.WriteString(" (ст. ")
-		sb.WriteString(pillarStr)
-		sb.WriteByte(')')
-	}
-
-	sb.WriteByte(']')
-
-	// health
-	health := h.GetHealth()
-	sb.WriteString(" Здоровье: ")
-	sb.WriteString(strconv.Itoa(health))
-	sb.WriteByte('/')
-	sb.WriteString(strconv.Itoa(h.GetMaxHealth()))
-
-	appendDiff(health, int(lastHealth), &sb)
-	sb.WriteByte(';')
-
-	// gold
-	sb.WriteString(" Золота: ")
-	sb.WriteString(h.GetGoldApprox())
-
-	if h.GetGold() >= 0 {
-		appendDiff(h.GetGold(), lastGold, &sb)
-	}
-	sb.WriteByte(';')
-
-	// inventory
-	invNum := h.GetInvNum()
-	sb.WriteString(" Инвентарь: ")
-	sb.WriteString(strconv.Itoa(invNum))
-	sb.WriteByte('/')
-	sb.WriteString(strconv.Itoa(h.GetMaxInvNum()))
-
-	appendDiff(h.GetInvNum(), int(lastInvNum), &sb)
-	sb.WriteByte(';')
-
-	sb.WriteByte('\n')
-
-	fmt.Print(sb.String())
 }
 
 func trackFight() {
